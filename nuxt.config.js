@@ -35,6 +35,8 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/auth-next'
   ],
 
   tailwindcss: {
@@ -42,7 +44,31 @@ export default {
     exposeConfig: true,
   },
 
+  router: {
+    middleware: ['auth']
+  },
+
+  // publicRuntimeConfig: {
+  //       axios: {
+  //           browserBaseURL: process.env.BASE_URL_API
+  //       },
+  //       game3rdBaseURL:
+  //           process.env.GAME_3RD_URL_API ||
+  //           'https://staging-gamemun-3rd-qhqdywr4hq-as.a.run.app'
+  //   },
+  //   privateRuntimeConfig: {
+  //       axios: {
+  //           baseURL: process.env.BASE_URL_API
+  //       },
+  //       game3rdBaseURL:
+  //           process.env.GAME_3RD_URL_API ||
+  //           'https://staging-gamemun-3rd-qhqdywr4hq-as.a.run.app'
+  //   },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
+  axios: {
+    baseURL: process.env.BASE_URL_API
+  },
   build: {
     babel:{
       plugins: [
@@ -55,5 +81,39 @@ export default {
         // ]
       ]
     }
-  }
+  },
+
+  auth: {
+    localStorage: false,
+    cookie: {
+      prefix: 'auth.',
+      options: {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7
+      }
+    },
+    redirect: {
+      login: '/',
+      logout: '/login'
+  },
+    strategies: {
+        local: {
+          token: {
+            property: 'accessToken'
+          },
+          endpoints: {
+            login: {
+              url: '/users/login',
+              method: 'post'
+            },
+            user: { url: "/users/me", method: "get" },
+            logout: false,
+          },
+          user: {
+            property: 'data',
+            autoFetch: true
+          }
+        }
+    },
+  },
 }

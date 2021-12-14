@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+.font-kanit{
+  font-family: 'Kanit', sans-serif;
+}
+
+.backgroundImage {
+  /* background-image: url("~/assets/img/brick-wall.jpg"); */
+  background-image: url("~/assets/img/bg-main.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* background-color: red; */
+}
+
+.bgPanelGrid {
+  background-image: url("~/assets/img/brick.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+/* .bgBomb {
+  background-image: url("~/assets/img/bomb-pic.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+} */
+
+
+.text-color-black {
+  color: #000;
+}
+
+.absolute-center {
+  top : 0%;
+  /* left: 50%; */
+}
+
+.shakePanel {
+  animation: shake 0.5s;
+  /* animation-iteration-count: infinite; */
+}
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}

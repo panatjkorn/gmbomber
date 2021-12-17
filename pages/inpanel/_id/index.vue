@@ -31,6 +31,7 @@
 <script>
 export default {
     layout : 'dashboard',
+    auth : true,
     data() {
         return {
             panelId : '',
@@ -48,21 +49,24 @@ export default {
             ],
             isActive : false,
             isWon : null,
-            isBombGifStatus : false
+            isBombGifStatus : false,
+            userId : ''
         }
     },
     created() {
+        this.userId = this.$store.state.auth.user.id
         this.panelId = parseInt(this.$route.params.id)
-        this.playingGame();
         this.getBombInPanel(true)
-        // this.isBombGif()
+        if(this.panelDefault.user_id === null) {
+            this.playingGame();
+        }
     },
     watch : {
         isWon : 'finishLabel'
     },
     methods : {
         async getBombInPanel(status_get_data_first) {
-            const url = `http://localhost:8080/api/v1/bomb_panels/${this.panelId}`
+            const url = `/bomb_panels/${this.panelId}`
             try {
                 const getDataPanel = await this.$axios.get(url);
                 this.panelDefault = getDataPanel.data.data;
@@ -72,7 +76,6 @@ export default {
                 if(status_get_data_first == true) {
                     let isBomb = null
                     for(let i = 0; i < this.panelDefault.default_panel.length; i++) {
-                        // console.log('this.panelDefault.default_panel',this.panelDefault.default_panel[i]);
 
                         for(let i2 = 0; i2 < this.countPanel.length; i2++) {
                             // console.log('this.countPanel',this.countPanel[i2]);
@@ -86,10 +89,6 @@ export default {
                     }
                 }
 
-                // if(this.isWon == false && this.isWon != null) {
-                //     this.isBombGif();
-                // }
-
             } catch(err) {
                 console.log(err);
             }
@@ -99,7 +98,7 @@ export default {
                 //เช็คว่ายังไม่ได้เปิด
                 this.countPanel[index].isActive = true;
 
-                const url = `http://localhost:8080/api/v1/bomb_panels/${this.panelId}/check_result?click_at=${index}`
+                const url = `/bomb_panels/${this.panelId}/check_result?click_at=${index}`
                 
                 try {
                     const checkResult = await this.$axios.get(url)
@@ -136,11 +135,13 @@ export default {
         },
         //set ว่า label ถูกเลือกไปแล้ว
         async playingGame() {
-            const url = `http://localhost:8080/api/v1/bomb_panels/${this.panelId}`
+            const url = `/bomb_panels/${this.panelId}/is_playing?user_id=${this.userId}`
 
             try {
                 const updateStatusPlaying = await this.$axios.put(url,{is_playing : true})
-                // console.log('updateStatusPlaying',updateStatusPlaying);
+                if(updateStatusPlaying.status == 200) {
+                    this.createPanel()
+                }
             } catch(err) {
                 console.log(err);
             }
@@ -158,6 +159,17 @@ export default {
             setTimeout(() => { 
                 this.isBombGifStatus = false;
             }, 1500);
+        },
+        async createPanel() {
+            const url = `/bomb_panels/`
+            try {
+                const createPanel = await this.$axios.post(url,{
+                    panel_name : "testcreate",
+                    total_bomb : 5
+                })
+            } catch(err) {
+                console.log(err);
+            }
         }
     }
 }

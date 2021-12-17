@@ -126,6 +126,23 @@
               </svg>
               เข้าสู่ระบบ
             </button>
+            <button
+              class="
+                w-full
+                bg-yellow-500
+                py-4
+                text-white
+                font-semibold
+                text-2xl
+                focus:outline-none
+                focus:ring
+                rounded
+                mt-2
+              "
+              @click="goToRegister()"
+            >
+              สมัครสมาชิก
+            </button>
           </div>
         </div>
       </div>
@@ -161,39 +178,17 @@ export default {
       
       await this.$auth.loginWith('local', { data: params }).then(async (response) => {
         if(response.status == 200) {
+          this.$toast.success("เข้าสู่ระบบสำเร็จ");
           this.$router.push('/');
         }
       }).catch((err) => {
         console.log(err);
+        this.$toast.error("ไม่สำเร็จ");
       })
-      
-      // await this.$auth
-      //   .loginWith('local', { data: params })
-      //   .then(async (res) => {
-      //     if (res) {
-      //       console.log('res: ', res);
-      //       this.isLoginLoading = false;
-      //       this.$router.push('/');
-      //       this.$nuxt.$loading.finish();
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     this.isLoginLoading = false;
-      //     this.$nuxt.$loading.finish();
-      //     console.log('error: ', error);
-      //     const errorMsg = error.response.data.error_message;
-      //     console.log('errorMsg: ', errorMsg);
-      //     this.$swal.fire(`${errorMsg}`, '', 'error');
-      //     // this.$swal('ผิดพลาด', 'กรุณาตรวจสอบชื่อผู้ใช้และรหัสผ่าน', 'error');
-      //   })
-      //   .finally(() => {
-      //     this.isLoginLoading = false;
-      //     this.$nuxt.$loading.finish();
-      //   });
     },
-    // testConfig() {
-    //   console.log(this.$config.game3rdBaseURL);
-    // }
+    goToRegister() {
+      this.$router.push('/register')
+    }
   },
 };
 </script>

@@ -23,6 +23,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    { src: '~/plugins/vuelidate.js', mode: 'client'},
+    { src: '~/plugins/vue-js-modal.js', mode: 'client'},
+    { src: '~/plugins/maz-ui.js', mode: 'client'},
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -36,7 +39,8 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
+    "vue-toastification/nuxt"
   ],
 
   tailwindcss: {
@@ -45,7 +49,7 @@ export default {
   },
 
   router: {
-    middleware: ['auth']
+    middleware: ['auth'],
   },
 
   // publicRuntimeConfig: {
@@ -67,18 +71,18 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   axios: {
-    baseURL: process.env.BASE_URL_API
+    baseURL: process.env.BASE_URL_API || `http://localhost:8080/api/v1`
   },
   build: {
     babel:{
       plugins: [
         ["@babel/plugin-proposal-private-property-in-object", { "loose": true }],
-        // [
-        //   'component', {
-        //     libraryName: 'maz-ui',
-        //     styleLibraryName: 'css'
-        //   }
-        // ]
+        [
+          'component', {
+            libraryName: 'maz-ui',
+            styleLibraryName: 'css'
+          }
+        ]
       ]
     }
   },
@@ -93,7 +97,7 @@ export default {
       }
     },
     redirect: {
-      login: '/',
+      login: '/login',
       logout: '/login'
   },
     strategies: {

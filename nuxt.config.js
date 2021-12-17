@@ -121,3 +121,6 @@ export default {
     },
   },
 }
+console.log('process.env.BASE_URL_API',process.env.BASE_URL_API);
+console.log('process.env',process.env);
+console.log('process',process);

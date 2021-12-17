@@ -71,7 +71,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   axios: {
-    baseURL: process.env.BASE_URL_API || `http://localhost:8080/api/v1`
+    baseURL: `https://lottery-offline-api-dev-76iziw7aaq-as.a.run.app/api/v1` || `http://localhost:8080/api/v1`
   },
   build: {
     babel:{

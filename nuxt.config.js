@@ -50,7 +50,7 @@ export default {
 
   router: {
     middleware: ['auth'],
-  },
+  }, 
 
   // publicRuntimeConfig: {
   //       axios: {

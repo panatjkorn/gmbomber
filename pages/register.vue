@@ -3,7 +3,7 @@
         <div class="">
             <div class="flex justify-center items-center h-screen">
                 <div class="bg-white md:w-1/3 w-full p-8 shadow-md rounded">
-                    <div class="grid grid-cols-1">
+                    <div v-if="isLoaded" class="grid grid-cols-1">
                         <div class="my-2">
                             <input
                             v-model="form.phone_number"
@@ -21,9 +21,14 @@
                                 p-2
                                 placeholder-gray-900
                             "
-                            @input="checkPhoneNumber()"
+                            @keyup="checkPhoneNumber()"
                             />
-                            <div v-if="submitCreateStatus == 'ERROR' && !$v.form.phone_number.required" class="text-red-500 text-xs">
+                            <div v-if="submitCreateStatus == 'ERROR' 
+                            && !$v
+                            && !$v.form
+                            && !$v.form.phone_number.required
+                            " 
+                            class="text-red-500 text-xs">
                                 กรุณาระบุเบอร์โทรศัพท์
                             </div>
                             <div v-if="validatePhone" class="text-red-500 text-xs">
@@ -48,7 +53,11 @@
                                     placeholder-gray-900
                                 "
                                 />
-                                <div v-if="submitCreateStatus == 'ERROR' && !$v.form.password.required" class="text-red-500 text-xs">
+                                <div v-if="submitCreateStatus == 'ERROR'
+                                && !$v
+                                && !$v.form 
+                                && !$v.form.password.required" 
+                                class="text-red-500 text-xs">
                                     กรุณาระบุรหัสผ่าน
                                 </div>
                             <div
@@ -83,10 +92,16 @@
                                     placeholder-gray-900
                                 "
                                 />
-                                <div v-if="submitCreateStatus == 'ERROR' && !$v.form.password2.required" class="text-red-500 text-xs">
-                                    กรุณาระบุรหัสผ่าน
+                                <div v-if="submitCreateStatus == 'ERROR'
+                                && !$v
+                                && !$v.form 
+                                && !$v.form.password2.required" 
+                                class="text-red-500 text-xs">
+                                    กรุณาระบุรหัสผ่านให้ถูกต้อง
                                 </div>
-                                <div v-if="$v.form.password2.sameAsPassword == false"  class="text-red-500 text-xs">
+                                <div v-if="
+                                !$v.form.password2.sameAsPassword"  
+                                class="text-red-500 text-xs">
                                     รหัสผ่านไม่ตรงกัน
                                 </div>
                             <div
@@ -163,7 +178,8 @@ export default {
             },
             submitCreateStatus : '',
             validatePassword : '',
-            validatePhone : false
+            validatePhone : false,
+            isLoaded : false
         }
     },
     validations: {
@@ -180,17 +196,21 @@ export default {
             }
         }
     },
+    mounted() {
+        this.isLoaded = true
+    },
     methods : {
         registerUser() {
             if(
+                this.$v && this.$v.form &&
                 this.$v.form.phone_number.$invalid == false &&
                 this.$v.form.password.$invalid == false &&
                 this.$v.form.password2.$invalid == false &&
                 this.validatePhone
             ) {
-                if(this.$v.form.password2.sameAsPassword) {
-                    this.registerUser()
-                }
+                // if(this.$v && this.$v.form && this.$v.form.password2.sameAsPassword) {
+                //     this.registerUser()
+                // }
 
             } else {
                 this.submitCreateStatus = 'ERROR';
@@ -221,7 +241,6 @@ export default {
                 this.$toast.error("ไม่สำเร็จ");
                 this.isLoginLoading = false
                 console.log(err);
-                this.clearForm();
             }
         },
         clearForm() {

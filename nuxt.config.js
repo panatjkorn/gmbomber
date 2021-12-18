@@ -121,6 +121,12 @@ export default {
         }
     },
   },
+
+  server: {
+    port: process.env.PORT || 3000,
+    // host: "0.0.0.0",
+    timing: false
+  },
 }
 console.log('process.env.BASE_URL_API',process.env.BASE_URL_API);
 // console.log('process.env',process.env);

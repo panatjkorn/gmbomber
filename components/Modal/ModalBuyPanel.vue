@@ -32,7 +32,7 @@
                         type="text" 
                         class="p-2 rounded-lg w-full border border-gray-300" 
                         placeholder="เงินเดิมพัน"
-                        @input="setUserMoneyManage()"
+                        @input="setMoneyReturnToUser()"
                     > -->
                     <MazInput
                         v-model="form.userMoney"
@@ -54,12 +54,14 @@
                 <button
                     class="bg-blue-200 text-black hover:bg-blue-500 hover:text-white font-bold py-2 px-4 rounded w-24
                     text-sm md:text-lg"
+                    @click="userBuyPanel()"
                 >
                     ตกลง
                 </button>
                 <button
                     class="bg-gray-400 text-black font-bold py-2 px-4 rounded w-24
                     text-sm md:text-lg"
+                    @click="closeModalBuyPanel()"
                 >
                     ยกเลิก
                 </button>
@@ -70,6 +72,7 @@
 </template>
 <script>
 export default {
+    props : ['statusResetForm'],
     data() {
         return {
             arrayMoneyChoose : [1,3,5,10,15,20,25,30,50,100,200,500],
@@ -80,14 +83,29 @@ export default {
         }
     },
     watch : {
-       'form.userMoney' : 'setUserMoneyManage'
+       'form.userMoney' : 'setMoneyReturnToUser',
+       statusResetForm : 'resetForm'
     },
     methods : {
         setPrice(moneyChoose) {
             this.form.userMoney = moneyChoose
         },
-        setUserMoneyManage(data) {
-            this.form.showMoneyReturn = data
+        setMoneyReturnToUser(data) {
+            this.form.showMoneyReturn = data * 2
+        },
+        closeModalBuyPanel() {
+            this.$emit('closeModalUserBuyPanel')
+            this.form.userMoney = '';
+            this.form.showMoneyReturn = '';
+        },
+        resetForm() {
+            if(this.statusResetForm == true) {
+                this.form.userMoney = '';
+                this.form.showMoneyReturn = '';
+            }
+        },
+        userBuyPanel() {
+            this.$emit('userBuyPanel',this.form)
         }
     }
 }

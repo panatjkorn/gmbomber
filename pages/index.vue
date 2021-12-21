@@ -5,13 +5,17 @@
       <div 
         v-for="(panel,index) in dataPanels" :key="index" 
         class="bg-white p-2 rounded-lg cursor-pointer shadow-md h-14 flex items-center justify-center"
-        @click="buyPanel()"
+        @click="ModalUserBuyPanel(panel)"
       >
         <h1>{{index+1}}</h1>
       </div>
     </div>
     <client-only>
-      <ModalBuyPanel />
+      <ModalBuyPanel 
+        :status-reset-form="statusClearForm"
+        @closeModalUserBuyPanel="closeModalUserBuyPanel"
+        @userBuyPanel="userBuyPanel"
+      />
     </client-only>
   </div>
 </template>
@@ -27,6 +31,9 @@ export default {
   data() {
     return {
       dataPanels : '',
+      statusClearForm : false,
+      formManage : null,
+      panelId : ''
     }
   },
   created() {
@@ -43,9 +50,19 @@ export default {
         console.log(err);
       }
     },
-    buyPanel() {
+    ModalUserBuyPanel(data) {
+      this.panelId = data.id;
+      this.statusClearForm = true
       this.$modal.show("ModalBuyPanel");
-
+    },
+    closeModalUserBuyPanel() {
+      this.$modal.hide("ModalBuyPanel");
+    },
+    async userBuyPanel(data) {
+      this.formManage = await data;
+      await this.$modal.hide("ModalBuyPanel");
+      this.$router.push(`/inpanel/${this.panelId}?price=${this.formManage.userMoney}`)
+      this.statusClearForm = false
     }
   }
 }

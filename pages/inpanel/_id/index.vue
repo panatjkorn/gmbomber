@@ -50,18 +50,18 @@ export default {
             isActive : false,
             isWon : null,
             isBombGifStatus : false,
-            userId : ''
+            userId : '',
+            panelPrice : ''
         }
     },
     created() {
         this.userId = this.$store.state.auth.user.id
         this.panelId = parseInt(this.$route.params.id)
-        this.getBombInPanel(true)
-        if(this.panelDefault.user_id === null) {
-            this.playingGame();
-        }
+        this.panelPrice = parseInt(this.$route.query.price)
+        this.getBombInPanel(true) 
     },
     watch : {
+        panelDefault : 'playingGame',
         isWon : 'finishLabel'
     },
     methods : {
@@ -71,7 +71,6 @@ export default {
                 const getDataPanel = await this.$axios.get(url);
                 this.panelDefault = getDataPanel.data.data;
                 this.isWon = this.panelDefault.is_won
-                // console.log('this.panelDefault',this.panelDefault);
 
                 if(status_get_data_first == true) {
                     let isBomb = null
@@ -98,10 +97,15 @@ export default {
                 //เช็คว่ายังไม่ได้เปิด
                 this.countPanel[index].isActive = true;
 
-                const url = `/bomb_panels/${this.panelId}/check_result?click_at=${index}`
+                const _data = {
+                    user_id : this.userId,
+                    click_at : index
+                }
+
+                const url = `/bomb_panels/${this.panelId}/check_result`
                 
                 try {
-                    const checkResult = await this.$axios.get(url)
+                    const checkResult = await this.$axios.post(url,_data)
                     //เลือกถูกแล้วไม่โดนระเบิด
                     if(checkResult.data.data == true) {
                         //ไม่ถูกระเบิด
@@ -125,7 +129,7 @@ export default {
                 
                 
             } else {
-                console.log('เลือกไปแล้ว');
+                this.$toast.error("เลือกซ้ำ");
             }
             
         },
@@ -135,23 +139,32 @@ export default {
         },
         //set ว่า label ถูกเลือกไปแล้ว
         async playingGame() {
-            const url = `/bomb_panels/${this.panelId}/is_playing?user_id=${this.userId}`
-
-            try {
-                const updateStatusPlaying = await this.$axios.put(url,{is_playing : true})
-                if(updateStatusPlaying.status == 200) {
-                    this.createPanel()
+            if(this.panelDefault.user_id === null) {
+                const url = `/bomb_panels/${this.panelId}/is_playing`
+                const _data = {
+                    user_id : this.userId,
+                    panel_price : this.panelPrice
                 }
-            } catch(err) {
-                console.log(err);
-            }
+
+                try {
+                    const updateStatusPlaying = await this.$axios.put(url,_data)
+                    // console.log('updateStatusPlaying',updateStatusPlaying);
+                    if(updateStatusPlaying.status == 200) {
+                        this.createPanel()
+                        // this.getMe()
+                    }
+                } catch(err) {
+                    console.log(err);
+                }
+             }
         },
         finishLabel(data) {
             if(data == false) {
                 // alert("game over !!")
                 this.isBombGif();
             } else {
-                alert("you are the winner")
+                this.$toast.success("You Are The Winner!!");
+                // this.getMe();
             }
         },
         isBombGif() {
@@ -170,7 +183,18 @@ export default {
             } catch(err) {
                 console.log(err);
             }
-        }
+        },
+        // async getMe() {
+        //     const url = `/users/me`
+        //     try {
+        //         const getUserDetail = await this.$axios.get(url);
+        //         this.user_detail = await getUserDetail.data.data;
+        //         await this.$store.dispatch('wallet/setWallet',this.user_detail)
+        //         this.walletMoney = this.$store.state.wallet.money_wallet;
+        //     } catch(err) {
+        //         console.log(err);
+        //     }
+        // }
     }
 }
 </script>

@@ -72,7 +72,8 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   axios: {
     // baseURL: `https://gamemun-bomber-dev-api-76iziw7aaq-as.a.run.app/api/v1` || `http://localhost:8080/api/v1`
-    baseURL: process.env.BASE_URL_API || `http://localhost:8080/api/v1`
+    baseURL: process.env.RUN_MODE == 'dev' 
+      ?  `http://localhost:8080/api/v1`  : `https://gamemun-bomber-dev-api-76iziw7aaq-as.a.run.app/api/v1`
   },
   build: {
     babel:{

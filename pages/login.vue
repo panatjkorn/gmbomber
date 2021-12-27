@@ -5,6 +5,7 @@
         <div class="grid grid-cols-1">
           <div class="my-2">
             <input
+              v-model="phone_number"
               type="text"
               placeholder="ผู้ใช้งาน"
               class="
@@ -19,8 +20,9 @@
                 p-2
                 placeholder-gray-900
               "
-              v-model="phone_number"
+              @input="validatePhone()"
             />
+            <div v-if="validatePhoneNumber" class="text-red-500 text-sm">กรุณาระบุเบอร์โทรศัพท์ให้ถูกต้อง</div>
           </div>
           <div class="my-2 relative">
             <input
@@ -159,9 +161,10 @@ export default {
   data() {
     return {
       showPassword: false,
-      phone_number: null,
+      phone_number: '',
       password: null,
       isLoginLoading: false,
+      validatePhoneNumber : false
     };
   },
   // created() {
@@ -169,25 +172,40 @@ export default {
   // },
   methods: {
     async login() {
-      this.$nuxt.$loading.start();
-      this.isLoginLoading = true;
-      const params = {
-        phone_number: this.phone_number,
-        password: this.password,
-      };
-      
-      await this.$auth.loginWith('local', { data: params }).then(async (response) => {
-        if(response.status == 200) {
-          this.$toast.success("เข้าสู่ระบบสำเร็จ");
-          this.$router.push('/');
-        }
-      }).catch((err) => {
-        console.log(err);
-        this.$toast.error("ไม่สำเร็จ");
-      })
+      if(this.phone_number.length > 0 && this.validatePhoneNumber == false) {
+        this.$nuxt.$loading.start();
+        this.isLoginLoading = true;
+        const params = {
+          phone_number: this.phone_number,
+          password: this.password,
+        };
+        
+        await this.$auth.loginWith('local', { data: params }).then(async (response) => {
+          if(response.status == 200) {
+            this.$toast.success("เข้าสู่ระบบสำเร็จ");
+            this.$router.push('/');
+          }
+        }).catch((err) => {
+          console.log(err);
+          if(err.response.status == 400 || err.response.status == 404) {
+            this.$toast.error(err.response.data.errors);
+          } else {
+            this.$toast.error("ไม่สำเร็จ");
+          }
+        })
+      } else {
+        this.validatePhoneNumber = true
+      }
     },
     goToRegister() {
       this.$router.push('/register')
+    },
+    validatePhone() {
+      if(this.phone_number.length != 10) {
+        this.validatePhoneNumber = true
+      } else {
+        this.validatePhoneNumber = false
+      }
     }
   },
 };

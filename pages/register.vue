@@ -24,8 +24,6 @@
                             @keyup="checkPhoneNumber()"
                             />
                             <div v-if="submitCreateStatus == 'ERROR' 
-                            && !$v
-                            && !$v.form
                             && !$v.form.phone_number.required
                             " 
                             class="text-red-500 text-xs">
@@ -54,8 +52,6 @@
                                 "
                                 />
                                 <div v-if="submitCreateStatus == 'ERROR'
-                                && !$v
-                                && !$v.form 
                                 && !$v.form.password.required" 
                                 class="text-red-500 text-xs">
                                     กรุณาระบุรหัสผ่าน
@@ -93,8 +89,6 @@
                                 "
                                 />
                                 <div v-if="submitCreateStatus == 'ERROR'
-                                && !$v
-                                && !$v.form 
                                 && !$v.form.password2.required" 
                                 class="text-red-500 text-xs">
                                     กรุณาระบุรหัสผ่านให้ถูกต้อง
@@ -131,7 +125,7 @@
                                 focus:ring
                                 rounded
                             "
-                            @click="registerUser()"
+                            @click="register()"
                             >
                             <svg
                                 v-if="isLoginLoading"
@@ -200,17 +194,18 @@ export default {
         this.isLoaded = true
     },
     methods : {
-        registerUser() {
+        register() {
             if(
                 this.$v && this.$v.form &&
                 this.$v.form.phone_number.$invalid == false &&
                 this.$v.form.password.$invalid == false &&
                 this.$v.form.password2.$invalid == false &&
-                this.validatePhone
+                this.validatePhone == false
             ) {
-                // if(this.$v && this.$v.form && this.$v.form.password2.sameAsPassword) {
-                //     this.registerUser()
-                // }
+
+                if(this.$v && this.$v.form && this.$v.form.password2.sameAsPassword) {
+                    this.registerUser()
+                }
 
             } else {
                 this.submitCreateStatus = 'ERROR';

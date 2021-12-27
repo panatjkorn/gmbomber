@@ -54,11 +54,11 @@ export default {
             panelPrice : ''
         }
     },
-    created() {
+    async created() {
         this.userId = this.$store.state.auth.user.id
         this.panelId = parseInt(this.$route.params.id)
         this.panelPrice = parseInt(this.$route.query.price)
-        this.getBombInPanel(true) 
+        this.getBombInPanel(true)
     },
     watch : {
         panelDefault : 'playingGame',
@@ -123,7 +123,12 @@ export default {
                
                 this.getBombInPanel(false);
                 } catch(err) {
-                    console.log(err);
+                console.log(err);
+                if(err.response.status == 400) {
+                    this.$toast.error(err.response.data.errors);
+                } else {
+                    this.$toast.error("something wrong");
+                }
                 this.getBombInPanel(false);
                 }
                 
@@ -177,7 +182,7 @@ export default {
             const url = `/bomb_panels/`
             try {
                 const createPanel = await this.$axios.post(url,{
-                    panel_name : "testcreate",
+                    panel_name : "createPanel",
                     total_bomb : 5
                 })
             } catch(err) {

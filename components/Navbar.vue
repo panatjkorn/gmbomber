@@ -11,8 +11,15 @@
 
                     <!-- Profile dropdown -->
                     <div class="ml-3 relative">
-                        <div v-if="isLogin">
-                            <span class="text-white">{{walletMoney}}</span>
+                        <div v-if="isLogin" class="flex">
+                            <div class="flex border border-w rounded-md px-5 py-1 mr-1">
+                                <span class="text-white">{{walletMoney}}</span>
+                                <div class="cursor-pointer" @click="refreshMoney()">
+                                    <svg data-v-8b206dd6="" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5 text-white ml-1 mt-0.5">
+                                        <path data-v-8b206dd6="" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                    </svg>
+                                </div>
+                            </div>
                             <button class="bg-gray-300 text-black font-bold py-1 px-4 rounded" @click="logout()">
                                 logout
                             </button>
@@ -30,7 +37,7 @@ export default {
     props : ['userDetail','walletMoney'],
     data() {
         return {
-            isLogin : null
+            isLogin : null,
         }
     },
     created() {
@@ -40,6 +47,9 @@ export default {
         logout() {
             this.$auth.logout();
             this.$router.push('/login')
+        },
+        refreshMoney() {
+            this.$emit('refreshMoneyUser')
         }
     }
 }

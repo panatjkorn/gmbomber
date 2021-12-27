@@ -5,6 +5,7 @@
       <Navbar 
         :user-detail="user_detail"
         :wallet-money="walletMoney"
+        @refreshMoneyUser="getMe"
       />
       <div class="wrapper px-8">
         <div class="wrapper-box">
@@ -25,7 +26,7 @@ export default {
     return { 
       formattedMenu: '',
       user_detail : '',
-      walletMoney : ''
+      walletMoney : '',
     };
   },
   mounted() {

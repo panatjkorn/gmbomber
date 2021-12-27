@@ -23,14 +23,31 @@
                 <div v-if="isBombGifStatus === true" class="w-full absolute absolute-center" >
                     <img src="@/assets/img/bombgif.gif" alt="" class="z-40 w-96 h-96">
                 </div>
+                <!-- <button @click="showModalWinner">คลิก</button> -->
             </div>
             
         </div>
+        <client-only>
+            <WinnerModal 
+                :panel-price="panelDefault.price"
+                @closeModalWin="closeModalWin"
+            />
+
+            <LoseModal 
+                @closeModalLose="closeModalLose"
+            />
+        </client-only>
     </div>
 </template>
 <script>
+import WinnerModal from '@/components/Modal/WinnerModal';
+import LoseModal from '@/components/Modal/LoseModal';
 export default {
     layout : 'dashboard',
+    components : {
+        WinnerModal,
+        LoseModal
+    },
     auth : true,
     data() {
         return {
@@ -70,6 +87,7 @@ export default {
             try {
                 const getDataPanel = await this.$axios.get(url);
                 this.panelDefault = getDataPanel.data.data;
+                // console.log(this.panelDefault);
                 this.isWon = this.panelDefault.is_won
 
                 if(status_get_data_first == true) {
@@ -156,7 +174,6 @@ export default {
                     // console.log('updateStatusPlaying',updateStatusPlaying);
                     if(updateStatusPlaying.status == 200) {
                         this.createPanel()
-                        // this.getMe()
                     }
                 } catch(err) {
                     console.log(err);
@@ -166,9 +183,12 @@ export default {
         finishLabel(data) {
             if(data == false) {
                 // alert("game over !!")
+                this.$toast.error("You Lose!!");
                 this.isBombGif();
+                this.showModalLose();
             } else {
                 this.$toast.success("You Are The Winner!!");
+                this.showModalWinner();
                 // this.getMe();
             }
         },
@@ -189,17 +209,25 @@ export default {
                 console.log(err);
             }
         },
-        // async getMe() {
-        //     const url = `/users/me`
-        //     try {
-        //         const getUserDetail = await this.$axios.get(url);
-        //         this.user_detail = await getUserDetail.data.data;
-        //         await this.$store.dispatch('wallet/setWallet',this.user_detail)
-        //         this.walletMoney = this.$store.state.wallet.money_wallet;
-        //     } catch(err) {
-        //         console.log(err);
-        //     }
-        // }
+        showModalWinner() {
+            this.$modal.show("WinnerModal");
+            this.getBombInPanel();
+        },
+        closeModalWin() {
+            this.$modal.hide("WinnerModal");
+            setTimeout(() => {
+                this.$router.push('/')
+            }, 1000);
+        },
+        showModalLose() {
+            this.$modal.show("LoseModal");
+        },
+        closeModalLose() {
+            this.$modal.hide("LoseModal");
+            setTimeout(() => {
+                this.$router.push('/')
+            }, 1000);
+        }
     }
 }
 </script>

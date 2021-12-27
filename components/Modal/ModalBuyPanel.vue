@@ -1,5 +1,5 @@
 <template>
-<modal
+    <modal
         name="ModalBuyPanel"
         classes="demo-modal-class"
         :min-width="200"

@@ -214,7 +214,7 @@ export default {
             this.getBombInPanel();
         },
         closeModalWin() {
-            this.$modal.hide("WinnerModal");
+            this.$modal.hide("WinnerModal"); 
             setTimeout(() => {
                 this.$router.push('/')
             }, 1000);

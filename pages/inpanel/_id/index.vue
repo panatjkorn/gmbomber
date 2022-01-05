@@ -48,7 +48,6 @@ export default {
         WinnerModal,
         LoseModal
     },
-    auth : true,
     data() {
         return {
             panelId : '',

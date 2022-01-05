@@ -46,29 +46,6 @@ export default {
         console.log(err);
       }
     }
-    // sideMenu() {
-    //   return nestedMenu(this.$store.state.menu.menu, this.$router.currentRoute);
-    // },
-    // linkTo,
-    // enter(el, done) {
-    //   return this.$velocity(
-    //     el,
-    //     'slideDown',
-    //     { duration: 300 },
-    //     { complete: done }
-    //   );
-    // },
-    // leave(el, done) {
-    //   return this.$velocity(
-    //     el,
-    //     'slideUp',
-    //     { duration: 300 },
-    //     { complete: done }
-    //   );
-    // },
-    // router() {
-    //   return this.$nuxt.$router;
-    // },
   },
 };
 </script>

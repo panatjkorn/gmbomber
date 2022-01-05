@@ -27,7 +27,6 @@ export default {
     ModalBuyPanel
   },
   layout : 'dashboard',
-  auth : true,
   data() {
     return {
       dataPanels : '',

@@ -48,9 +48,9 @@ export default {
     exposeConfig: true,
   },
 
-  router: {
-    middleware: ['auth'],
-  }, 
+  // router: {
+  //   middleware: ['auth'],
+  // }, 
 
   // publicRuntimeConfig: {
   //       axios: {
@@ -71,7 +71,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   axios: {
-    // baseURL: `https://gamemun-bomber-dev-api-76iziw7aaq-as.a.run.app/api/v1` || `http://localhost:8080/api/v1`
     baseURL: process.env.RUN_MODE == 'dev' 
       ?  `http://localhost:8080/api/v1`  : `https://gamemun-bomber-dev-api-76iziw7aaq-as.a.run.app/api/v1`
   },
@@ -89,39 +88,39 @@ export default {
     }
   },
 
-  auth: {
-    localStorage: false,
-    cookie: {
-      prefix: 'auth.',
-      options: {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7
-      }
-    },
-    redirect: {
-      login: '/login',
-      logout: '/login'
-  },
-    strategies: {
-        local: {
-          token: {
-            property: 'accessToken'
-          },
-          endpoints: {
-            login: {
-              url: '/users/login',
-              method: 'post'
-            },
-            user: { url: "/users/me", method: "get" },
-            logout: false,
-          },
-          user: {
-            property: 'data',
-            autoFetch: true
-          }
-        }
-    },
-  },
+  // auth: {
+  //   localStorage: false,
+  //   cookie: {
+  //     prefix: 'auth.',
+  //     options: {
+  //       path: '/',
+  //       maxAge: 60 * 60 * 24 * 7
+  //     }
+  //   },
+  //   redirect: {
+  //     login: '/login',
+  //     logout: '/login'
+  // },
+  //   strategies: {
+  //       local: {
+  //         token: {
+  //           property: 'accessToken'
+  //         },
+  //         endpoints: {
+  //           login: {
+  //             url: '/users/login',
+  //             method: 'post'
+  //           },
+  //           user: { url: "/users/me", method: "get" },
+  //           logout: false,
+  //         },
+  //         user: {
+  //           property: 'data',
+  //           autoFetch: true
+  //         }
+  //       }
+  //   },
+  // },
 
   server: {
     port: process.env.PORT || 3000,
@@ -129,6 +128,6 @@ export default {
     timing: false
   },
 }
-console.log('process.env.BASE_URL_API',process.env.BASE_URL_API);
+// console.log('process.env.BASE_URL_API',process.env.BASE_URL_API);
 // console.log('process.env',process.env);
 // console.log('process',process);

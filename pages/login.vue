@@ -153,11 +153,8 @@
 </template>
 
 <script>
-// import alert from '@/mixins/alert';
 export default {
   auth: false,
-//   mixins: [alert],
-  // middleware: ['isLoggedIn'],
   data() {
     return {
       showPassword: false,
@@ -167,9 +164,6 @@ export default {
       validatePhoneNumber : false
     };
   },
-  // created() {
-  //   // this.testConfig()
-  // },
   methods: {
     async login() {
       if(this.phone_number.length > 0 && this.validatePhoneNumber == false) {

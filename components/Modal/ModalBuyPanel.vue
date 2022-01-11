@@ -27,15 +27,8 @@
             <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-2 text-color-black mt-2 md:mt-5">
                 <div>
                     <label for="" class="text-sm md:text-lg">เงินเดิมพัน</label>
-                    <!-- <input 
-                        v-model="form.userMoney" 
-                        type="text" 
-                        class="p-2 rounded-lg w-full border border-gray-300" 
-                        placeholder="เงินเดิมพัน"
-                        @input="setMoneyReturnToUser()"
-                    > -->
                     <MazInput
-                        v-model="form.userMoney"
+                        v-model="form.userMoneyToPay"
                         placeholder="เงินเดิมพัน"
                         size="sm"
                     />
@@ -77,30 +70,30 @@ export default {
         return {
             arrayMoneyChoose : [1,3,5,10,15,20,25,30,50,100,200,500],
             form : {
-                userMoney : '',
+                userMoneyToPay : '',
                 showMoneyReturn : ''
             }
         }
     },
     watch : {
-       'form.userMoney' : 'setMoneyReturnToUser',
+       'form.userMoneyToPay' : 'setMoneyReturnToUser',
        statusResetForm : 'resetForm'
     },
     methods : {
         setPrice(moneyChoose) {
-            this.form.userMoney = moneyChoose
+            this.form.userMoneyToPay = moneyChoose
         },
         setMoneyReturnToUser(data) {
             this.form.showMoneyReturn = data * 2
         },
         closeModalBuyPanel() {
             this.$emit('closeModalUserBuyPanel')
-            this.form.userMoney = '';
+            this.form.userMoneyToPay = '';
             this.form.showMoneyReturn = '';
         },
         resetForm() {
             if(this.statusResetForm == true) {
-                this.form.userMoney = '';
+                this.form.userMoneyToPay = '';
                 this.form.showMoneyReturn = '';
             }
         },

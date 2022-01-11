@@ -4,16 +4,29 @@
   font-family: 'Kanit', sans-serif;
 }
 
+.text-green-reward-num {
+  color :#3BA323
+}
+
 .backgroundImage {
-  /* background-image: url("~/assets/img/brick-wall.jpg"); */
-  background-image: url("~/assets/img/bg-main.jpg");
+  /* background-image: url("~/assets/img/mine-bomb-bg.jpg"); */
+  background-image: url("~/assets/img/mine-bomb-bg.jpg");
   background-size: cover;
   background-repeat: no-repeat;
+  min-height: 100vh;
   /* background-color: red; */
 }
 
 .bgPanelGrid {
-  background-image: url("~/assets/img/brick.png");
+  background-image: url("~/assets/img/bg-brick.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  /* height:0;width:20% */
+}
+
+.bg-mine-end { 
+  background-image: url("~/assets/img/mine-endfloor.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -67,3 +80,28 @@
   90% { transform: translate(1px, 2px) rotate(0deg); }
   100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
+
+.nuxt-progress {
+  width: 0px !important;
+}
+
+.position-child {
+  width: -webkit-fill-available;
+  transform: translate(-50%, -50%);
+}
+
+.bg-black-vdo {
+  background: #000;
+}
+
+/* .position-child {
+  position: absolute;
+  top: 50%;  
+  left: 50%; 
+  transform: translate(-50%, -50%);
+  width: -webkit-fill-available;
+
+  @media (max-width: 320px) {
+    top: 55%;
+  }
+} */

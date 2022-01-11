@@ -161,7 +161,7 @@
 import { required, sameAs } from 'vuelidate/lib/validators'
 export default {
     layout : 'dashboard',
-    auth : false,
+    // auth : false,
     data() {
         return {
             isLoginLoading : false,

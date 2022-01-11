@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex justify-center items-center h-screen">
+        <div class="flex justify-center items-center">
             <!-- md:w-1/3 -->
             <div class="bg-transparent md:w-96 w-full shadow-md rounded-lg relative">
                     
@@ -42,12 +42,14 @@
 <script>
 import WinnerModal from '@/components/Modal/WinnerModal';
 import LoseModal from '@/components/Modal/LoseModal';
+import { mapGetters } from 'vuex'
 export default {
     layout : 'dashboard',
     components : {
         WinnerModal,
         LoseModal
     },
+    middleware : ['checkUUId'],
     data() {
         return {
             panelId : '',
@@ -66,12 +68,17 @@ export default {
             isActive : false,
             isWon : null,
             isBombGifStatus : false,
-            userId : '',
-            panelPrice : ''
+            panelPrice : '',
         }
     },
+    computed: {
+        ...mapGetters({
+            uuId: "user/getUUId",
+            wallet_token : "user/getWalletToken"
+        })
+    },
     async created() {
-        this.userId = this.$store.state.auth.user.id
+        // this.uuId = this.$store.state.user.uuId
         this.panelId = parseInt(this.$route.params.id)
         this.panelPrice = parseInt(this.$route.query.price)
         this.getBombInPanel(true)
@@ -82,11 +89,11 @@ export default {
     },
     methods : {
         async getBombInPanel(status_get_data_first) {
-            const url = `/bomb_panels/${this.panelId}`
+            const url = `/bomb_panels/${this.panelId}?uuId=${this.uuId}`
             try {
                 const getDataPanel = await this.$axios.get(url);
                 this.panelDefault = getDataPanel.data.data;
-                // console.log(this.panelDefault);
+                console.log(this.panelDefault);
                 this.isWon = this.panelDefault.is_won
 
                 if(status_get_data_first == true) {
@@ -115,7 +122,7 @@ export default {
                 this.countPanel[index].isActive = true;
 
                 const _data = {
-                    user_id : this.userId,
+                    uu_id : this.uuId,
                     click_at : index
                 }
 
@@ -161,16 +168,16 @@ export default {
         },
         //set ว่า label ถูกเลือกไปแล้ว
         async playingGame() {
-            if(this.panelDefault.user_id === null) {
+            if(this.panelDefault.uu_id === null) {
                 const url = `/bomb_panels/${this.panelId}/is_playing`
                 const _data = {
-                    user_id : this.userId,
-                    panel_price : this.panelPrice
+                    uu_id : this.uuId,
+                    panel_price : this.panelPrice,
+                    token : this.wallet_token
                 }
 
                 try {
                     const updateStatusPlaying = await this.$axios.put(url,_data)
-                    // console.log('updateStatusPlaying',updateStatusPlaying);
                     if(updateStatusPlaying.status == 200) {
                         this.createPanel()
                     }
@@ -215,7 +222,7 @@ export default {
         closeModalWin() {
             this.$modal.hide("WinnerModal"); 
             setTimeout(() => {
-                this.$router.push('/')
+                this.$router.push(`/?token=${this.wallet_token}`)
             }, 1000);
         },
         showModalLose() {
@@ -224,7 +231,7 @@ export default {
         closeModalLose() {
             this.$modal.hide("LoseModal");
             setTimeout(() => {
-                this.$router.push('/')
+                this.$router.push(`/?token=${this.wallet_token}`)
             }, 1000);
         }
     }

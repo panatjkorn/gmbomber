@@ -13,6 +13,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     screens: {
+      'se' : '320px',
+      'xs' : '375px',
+      'iphone8plus' : '414',
       sm: '640px',
       md: '768px',
       lg: '1024px',

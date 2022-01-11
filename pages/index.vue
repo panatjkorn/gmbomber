@@ -1,68 +1,176 @@
 <template>
-  <!-- <Tutorial/> -->
-  <div class="h-full md:h-screen py-2 md-py-0">
-    <div v-if="dataPanels && dataPanels.length > 0" class="grid md:grid-cols-2 lg:grid-cols-6 gap-2 text-color-black">
-      <div 
-        v-for="(panel,index) in dataPanels" :key="index" 
-        class="bg-white p-2 rounded-lg cursor-pointer shadow-md h-14 flex items-center justify-center"
-        @click="ModalUserBuyPanel(panel)"
-      >
-        <h1>{{index+1}}</h1>
-      </div>
+    <div>
+        <div class="flex justify-center items-center">
+            <!-- md:w-1/3 -->
+            <div>
+                <div class="md:w-96 w-full rounded-lg">
+                    <div class="px-1 py-1">
+                        <div class="flex justify-center items-center bg-black text-white rounded-lg">
+                            <img src="@/assets/img/reward.png" alt="" class="w-10 h-10">
+                                <span class="ml-2">จำนวนสมบัติที่เหลือ</span>
+                                <span class="text-5xl ml-2 font-bold text-green-400">4</span>
+                        </div>
+                    </div>
+                    <div class="mx-8">
+                        <div class="flex justify-center items-center bg-black text-white rounded-lg">
+                            <div class="flex justify-center items-center bg-black text-white rounded-lg">
+                                <img src="@/assets/img/bomb1.png" alt="" class="w-10 h-10">
+                                    <span class="ml-2">ระเบิดที่เหลือ</span>
+                                    <span class="text-3xl ml-2 font-bold">2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-96 w-full rounded-lg mt-8">
+                    <!-- <div class="px-1 py-1">
+                        <div class="flex justify-center items-center bg-black text-white rounded-lg">
+                            <img src="@/assets/img/reward.png" alt="" class="w-10 h-10">
+                                <span class="ml-2">จำนวนสมบัติที่เหลือ</span>
+                                <span class="text-5xl ml-2 font-bold text-green-400">4</span>
+                        </div>
+                    </div>
+                    <div class="mx-8">
+                        <div class="flex justify-center items-center bg-black text-white rounded-lg">
+                            <div class="flex justify-center items-center bg-black text-white rounded-lg">
+                                <img src="@/assets/img/bomb1.png" alt="" class="w-10 h-10">
+                                    <span class="ml-2">ระเบิดที่เหลือ</span>
+                                    <span class="text-3xl ml-2 font-bold">2</span>
+                            </div>
+                        </div>
+                    </div> -->
+                    
+                    <div class="p-3 shadow-md">
+                        <div class="grid grid-cols-3  gap-1">
+                            <div v-for="(bomb,index) in countPanel" :key="index">
+                                <div 
+                                    class="w-100 h-24 md:w-28 md:h-28 cursor-pointer rounded-lg border border-white opacity-100"
+                                    :class="{
+                                        'bgPanelGrid' : bomb.openPanel == false && bomb.isActive == false,
+                                        'bgPanelGrid shakePanel' : bomb.openPanel == false && bomb.isActive == true,
+                                        'bg-mine-end' : bomb.openPanel == true && bomb.isActive == true && bomb.isBomb == true,
+                                        'bg-green-500' : bomb.openPanel == true && bomb.isActive == true && bomb.isBomb == false
+                                    }"
+                                    @click="checkResult(index)"
+                                >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4 px-2 py-1">
+                        <div class="flex justify-center items-center bg-black text-white rounded-full border border-white col-span-2">
+                            <img src="@/assets/img/Coins.png" alt="" class="w-10 h-10">
+                                <span class="ml-2 text-yellow-300">จำนวนสมบัติที่เหลือ</span>
+                                <span class="text-5xl ml-2 font-bold text-white">4</span>
+                        </div>
+                        <div class="col-span-1">
+                            <button class="text-white rounded-full">
+                                <img src="@/assets/img/auto.png" alt="" class="w-10 h-10">
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center items-center mt-2">
+                        <button
+                            class="
+                                px-8 py-2
+                                rounded-full
+                                bg-red-500
+                                text-white
+                                border border-white
+                            "
+                        >เริ่มเกม
+                    </button>
+                        <!-- <img src="@/assets/img/Coins.png" alt="" class="w-10 h-10"> -->
+                    </div>
+                    <!-- <div class="px-5 py-1">
+                        <div class="flex justify-center items-center bg-black text-white rounded-lg border border-white">
+                            <img src="@/assets/img/reward.png" alt="" class="w-10 h-10">
+                                <span class="ml-2">จำนวนสมบัติที่เหลือ</span>
+                                <span class="text-5xl ml-2 font-bold text-green-400">4</span>
+                        </div>
+                    </div> -->
+                    
+                    <div v-if="isBombGifStatus === true" class="w-full absolute absolute-center" >
+                        <img src="@/assets/img/bombgif.gif" alt="" class="z-40 w-96 h-96">
+                    </div>
+                    <!-- <button @click="showModalWinner">คลิก</button> -->
+            </div>
+            </div>
+        </div>
     </div>
-    <client-only>
-      <ModalBuyPanel 
-        :status-reset-form="statusClearForm"
-        @closeModalUserBuyPanel="closeModalUserBuyPanel"
-        @userBuyPanel="userBuyPanel"
-      />
-    </client-only>
-  </div>
 </template>
 
 <script>
-import ModalBuyPanel from '@/components/Modal/ModalBuyPanel';
-export default {
-  components : {
-    ModalBuyPanel
-  },
-  layout : 'dashboard',
-  data() {
-    return {
-      dataPanels : '',
-      statusClearForm : false,
-      formManage : null,
-      panelId : ''
-    }
-  },
-  created() {
-    this.getDataPanelBomb();
-  },
-  methods : {
-    async getDataPanelBomb() {
-      const url = `/bomb_panels/`
+import { mapGetters } from 'vuex'
+    export default {
+        layout : 'dashboard',
+        data() {
+            return {
+                panelId : '',
+                panelDefault : '',
+                countPanel : [
+                    { isActive : false, openPanel : false, isBomb : false },
+                    { isActive : false, openPanel : false, isBomb : false },
+                    { isActive : false, openPanel : false, isBomb : false },
+                    { isActive : false, openPanel : false, isBomb : false },
+                    { isActive : false, openPanel : false, isBomb : false },
+                    { isActive : false, openPanel : false, isBomb : false },
+                    { isActive : false, openPanel : false, isBomb : false },
+                    { isActive : false, openPanel : false, isBomb : false },
+                    { isActive : false, openPanel : false, isBomb : false },
+                ],
+                isActive : false,
+                isWon : null,
+                isBombGifStatus : false,
+                panelPrice : '',
+            }
+        },
+        computed: {
+            ...mapGetters({
+                uuId: "user/getUUId",
+                wallet_token : "user/getWalletToken"
+            })
+        },
+        mounted() {
+            this.getPanelAuto(true)
+        },
+        methods : {
+            async getPanelAuto(status_get_data_first) {
+                // console.log(this.uuId);
+                const url = `/bomb_panels/user/random_panel?uuId=${this.uuId}`
 
-      try {
-        const getDataPanel = await this.$axios.get(url);
-        this.dataPanels = getDataPanel.data.data;
-      } catch(err) {
-        console.log(err);
-      }
-    },
-    ModalUserBuyPanel(data) {
-      this.panelId = data.id;
-      this.statusClearForm = true
-      this.$modal.show("ModalBuyPanel");
-    },
-    closeModalUserBuyPanel() {
-      this.$modal.hide("ModalBuyPanel");
-    },
-    async userBuyPanel(data) {
-      this.formManage = await data;
-      await this.$modal.hide("ModalBuyPanel");
-      this.$router.push(`/inpanel/${this.panelId}?price=${this.formManage.userMoney}`)
-      this.statusClearForm = false
+                try {
+                    const getPanelAutoToUser = await this.$axios.get(url)
+                    this.panelDefault = getPanelAutoToUser.data.data;
+                    // console.log('panelDefault',this.panelDefault.id);
+                    this.isWon = getPanelAutoToUser.data.data.is_won
+
+                    if(status_get_data_first == true) {
+                    let isBomb = null
+                    for(let i = 0; i < this.panelDefault.default_panel.length; i++) {
+                        // console.log('this.panelDefault.default_panel',this.panelDefault.default_panel);
+                        for(let i2 = 0; i2 < this.countPanel.length; i2++) {
+                            if(this.panelDefault.default_panel[i].open_panel == i2) {
+                                this.countPanel[i2].isActive = true
+                                setTimeout(()=> { 
+                                    this.setOpenLabel(i2,this.panelDefault.default_panel[i].open_panel_default);
+                                }, 500);
+                            }
+                        }
+                    }
+                }
+
+                } catch(err) {
+                    console.log(err);
+                }
+            },
+            setOpenLabel(index,isBomb) {
+                this.countPanel[index].openPanel = true;
+                this.countPanel[index].isBomb = isBomb == 0 ? true : false;
+
+            },
+        }
     }
-  }
-}
 </script>

@@ -154,7 +154,7 @@
 
 <script>
 export default {
-  auth: false,
+  // auth: false,
   data() {
     return {
       showPassword: false,

@@ -1,18 +1,42 @@
 <template>
     <div>
-        <div class="flex justify-center items-center">
+        <div class="flex justify-center items-center mb-5 ">
             <!-- md:w-1/3 -->
             <div>
-                <div class="md:w-96 w-full rounded-lg">
+                <div class="md:w-96 w-full rounded-lg md:mt-14 xl:mt-0">
                     <div class="px-1 py-1">
-                        <div class="flex justify-center items-center bg-black text-white rounded-lg">
-                            <img src="@/assets/img/reward.png" alt="" class="w-10 h-10">
-                                <span class="ml-2">จำนวนสมบัติที่เหลือ</span>
-                                <span class="text-5xl ml-2 font-bold text-green-400">4</span>
+                        <div class="flex items-center bg-black text-white rounded-full px-5">
+                            <div class="flex-grow w-16">
+                                <img src="@/assets/img/reward.png" alt="" class="w-10 h-10 ">
+                            </div>
+                            <div class="flex-shrink w-64">
+                                <span class="ml-2 ">จำนวนสมบัติที่เหลือ</span>
+                            </div>
+                            <div class="flex-grow w-16">
+                                <span class="text-5xl ml-2 font-bold green-48E223 ">4</span>
+                            </div>
+                            <!-- <div class="grid grid-cols-5 text-center">
+                                <div>
+                                    <img src="@/assets/img/reward.png" alt="" class="w-10 h-10 ">
+                                </div>
+                                <div class="col-span-3">
+                                    <span class="ml-2 ">จำนวนสมบัติที่เหลือ</span>
+                                </div>
+                                <div>
+                                    <span class="text-5xl ml-2 font-bold green-48E223 ">4</span>
+                                </div>
+                            </div> -->
+                            <!-- <img src="@/assets/img/reward.png" alt="" class="w-10 h-10 ">
+                            <div class="text-center">
+                                <span class="ml-2 ">จำนวนสมบัติที่เหลือ</span>
+                            </div>
+                            <div class="ml-auto">
+                                <span class="text-5xl ml-2 font-bold green-48E223">4</span>
+                            </div> -->
                         </div>
                     </div>
                     <div class="mx-8">
-                        <div class="flex justify-center items-center bg-black text-white rounded-lg">
+                        <div class="flex justify-center items-center bg-black text-white rounded-full">
                             <div class="flex justify-center items-center bg-black text-white rounded-lg">
                                 <img src="@/assets/img/bomb1.png" alt="" class="w-10 h-10">
                                     <span class="ml-2">ระเบิดที่เหลือ</span>
@@ -40,10 +64,24 @@
                         </div>
                     </div> -->
                     
-                    <div class="p-3 shadow-md">
+                    <div class="p-3 shadow-md xs:mt-24 iphone8plus:mt-36 md:mt-36 lg:mt-64 xl:mt-24">
                         <div class="grid grid-cols-3  gap-1">
                             <div v-for="(bomb,index) in countPanel" :key="index">
+                                <!-- {{bomb.openPanel}}
+                                {{bomb.isActive}}
+                                {{bomb.isBomb}} -->
                                 <div 
+                                    class="w-100 h-24 md:w-28 md:h-28 cursor-pointer rounded-lg border border-white opacity-100"
+                                    :class="{
+                                        'bgPanelGrid' : bomb.openPanel == false && bomb.isActive == false,
+                                        'shakePanel bg-dig-panel' : bomb.openPanel == false && bomb.isActive == true,
+                                        'bg-mine-end' : bomb.openPanel == true && bomb.isActive == true && bomb.isBomb == true,
+                                        'bg-green-500' : bomb.openPanel == true && bomb.isActive == true && bomb.isBomb == false
+                                    }"
+                                    @click="checkResult(index)"
+                                >
+                                </div>
+                                <!-- <div 
                                     class="w-100 h-24 md:w-28 md:h-28 cursor-pointer rounded-lg border border-white opacity-100"
                                     :class="{
                                         'bgPanelGrid' : bomb.openPanel == false && bomb.isActive == false,
@@ -53,7 +91,7 @@
                                     }"
                                     @click="checkResult(index)"
                                 >
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -156,7 +194,7 @@ import { mapGetters } from 'vuex'
                                 this.countPanel[i2].isActive = true
                                 setTimeout(()=> { 
                                     this.setOpenLabel(i2,this.panelDefault.default_panel[i].open_panel_default);
-                                }, 500);
+                                }, 2500);
                             }
                         }
                     }

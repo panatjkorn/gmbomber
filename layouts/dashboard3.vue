@@ -8,40 +8,51 @@
       :wallet-money="walletMoney"
     />
     <!-- <Nuxt /> -->
-    <div class="relative top-0 ">
-        <video 
-            autoplay 
-            loop 
-            playsinline 
-            muted 
-            preload="metadata" 
-            width="599" 
-            height="auto" 
-            class="
-                mx-auto 
-                my-auto 
-                min-height-screen
-            "
-        >
-        <source src="@/assets/img/Bomb-BG-FINAL1.mp4" type="video/mp4">
-        </video>
-        <div 
-            class="
-                absolute
-                top-0
-                left-0
-                right-0
-            "
-            >
-            <div class="wrapper-box">
-                <div class="content">
-                <Nuxt class="min-h-screen" /> 
-                </div>
-            </div>
+    <video 
+      autoplay 
+      loop 
+      playsinline 
+      muted 
+      preload="metadata" 
+      width="599" 
+      height="auto" 
+      class="
+        mx-auto 
+        my-auto 
+        min-height-screen
+      "
+    >
+      <source src="@/assets/img/Bomb-BG-FINAL1.mp4" type="video/mp4">
+    </video>
+    <!-- position-child -->
+    <!-- absolute 
+        wrapper 
+        px-2 
+        position-child 
+        se: top-1/2 left-1/2
+        iphone8plus : mt-0
+        xs:mt-1
+        lg: top-1/3
+        xl: top-96 -->
+    <div 
+      class="
+        absolute
+        wrapper 
+        px-2 
+        position-child 
+        se: top-1/2 left-1/2
+        iphone8plus : mt-0
+        xs:mt-1
+        lg: top-1/3
+        xl: top-96
+      "
+      >
+      <div class="wrapper-box">
+        <div class="content md:p-8 md:pt-0">
+          <Nuxt class="min-h-screen" /> 
         </div>
+      </div>
     </div>
-    
-    
   </div>
 </div>
   <!-- <div class="font-kanit">
@@ -120,20 +131,4 @@ export default {
 };
 </script>
 
-<style>
-video {
-  object-fit: cover;
-  height: 100vh;
-}
-
-
-.viewport-header {
-  position: relative;
-  height: 100vh;
-  top: 100;
-  /* text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center; */
-}
-</style>
+<style></style>

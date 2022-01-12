@@ -6,7 +6,7 @@
                 <div class="md:w-96 w-full rounded-lg md:mt-14 xl:mt-0">
                     <div class="px-1 py-1">
                         <div class="flex items-center bg-black text-white rounded-full px-5">
-                            <div class="flex-grow w-16">
+                            <!-- <div class="flex-grow w-16">
                                 <img src="@/assets/img/reward.png" alt="" class="w-10 h-10 ">
                             </div>
                             <div class="flex-shrink w-64">
@@ -14,7 +14,7 @@
                             </div>
                             <div class="flex-grow w-16">
                                 <span class="text-5xl ml-2 font-bold green-48E223 ">4</span>
-                            </div>
+                            </div> -->
                             <!-- <div class="grid grid-cols-5 text-center">
                                 <div>
                                     <img src="@/assets/img/reward.png" alt="" class="w-10 h-10 ">

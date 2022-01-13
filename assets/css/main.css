@@ -97,6 +97,10 @@
 .green-48E223 {
   color : #48E223
 }
+
+.vm--modal {
+  background: none !important;
+}
 /* .position-child {
   position: absolute;
   top: 50%;  

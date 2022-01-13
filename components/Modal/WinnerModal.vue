@@ -9,11 +9,17 @@
         width="365"
         height="auto"
     >
-      <div class="bg-transparent">
+    <img src="@/assets/img/win1.png" alt="" class="w-full">
+    <div class="flex justify-center items-center">
+        <img src="@/assets/img/resume.png" alt="" class="w-64 md:w-72 h-auto">
+    </div>
+      <!-- <div class="bg-transparent">
           <div class="px-1 md:px-14 py-2 text-4xl md:text-4xl text-center 
-          text-yellow-300 bg-black border-2 border-white">
+          text-yellow-300 border-2 border-white">
+          
             <div class="grid justify-center">
                 <div>
+                    <img src="@/assets/img/win1.png" alt="" class="w-full">
                     <p>YOU WIN !!</p>
                     <p class="text-2xl">ได้เงินรางวัล {{ panelPrice * 2 }} บาท</p>
                 </div>
@@ -28,7 +34,7 @@
                 </div>
             </div>
           </div>
-      </div>
+      </div> -->
     </modal>
 </template>
 <script>

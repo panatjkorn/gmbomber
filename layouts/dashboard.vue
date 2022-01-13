@@ -77,8 +77,8 @@ export default {
       formattedMenu: '',
       user_detail : '',
       walletMoney : '',
-      token : this.$route.query.token,
-      uuId : this.$route.query.token.split("[SALT]")[2],
+      token : this.$route.query.user_tk,
+      uuId : this.$route.query.user_tk.split("[SALT]")[2],
     };
   },
   created() {

@@ -64,10 +64,24 @@
 
                     <div class="grid grid-cols-4 gap-4 px-2 py-1 md:mt-3">
                         
-                        <div class="flex justify-center items-center bg-black text-white rounded-full border border-white col-span-3">
+                        <div 
+                            class="
+                                flex 
+                                justify-center 
+                                items-center 
+                                bg-black 
+                                text-white 
+                                rounded-full 
+                                border 
+                                border-white 
+                                col-span-3
+                                cursor-pointer
+                                "
+                            @click="modalChoosePrice()"
+                            >
                             <img src="@/assets/img/Coins.png" alt="" class="w-10 h-10">
                                 <span class="ml-2 text-yellow-300">เงินเดิมพัน</span>
-                                <span class="text-5xl ml-2 font-bold text-white">4</span>
+                                <span class="text-4xl ml-2 font-bold text-white">{{ priceUserReceive }}</span>
                         </div>
                         <div class="col-span-1">
                             <button class="text-white rounded-full">
@@ -76,7 +90,7 @@
                         </div>
                     </div>
 
-                    <div class="flex justify-center items-center mt-2 cursor-pointer" @click="testModal()">
+                    <div class="flex justify-center items-center mt-2 cursor-pointer" @click="startGame()">
                         <img src="@/assets/img/play.png" alt="" class="w-64 md:w-72 h-auto">
                     </div>
                     
@@ -92,6 +106,12 @@
                 :panel-price="panelDefault.price"
                 @closeModalWin="closeModalWin"
             />
+
+            <ModalChoosePrice 
+                :panel-price="panelPriceData"
+                :status-clear-form="statusClearForm"
+                @submitChoosePrice="submitChoosePrice"
+            />
 <!-- 
             <LoseModal 
                 @closeModalLose="closeModalLose"
@@ -102,13 +122,15 @@
 
 <script>
 import WinnerModal from '@/components/Modal/WinnerModal';
+import ModalChoosePrice from '@/components/Modal/ModalChoosePrice';
 import LoseModal from '@/components/Modal/LoseModal';
 import { mapGetters } from 'vuex'
     export default {
         layout : 'dashboard',
             components : {
             WinnerModal,
-            LoseModal
+            LoseModal,
+            ModalChoosePrice
         },
         data() {
             return {
@@ -128,7 +150,10 @@ import { mapGetters } from 'vuex'
                 isActive : false,
                 isWon : null,
                 isBombGifStatus : false,
-                panelPrice : '',
+                panelPriceData : '',
+                priceUserReceive : 0,
+                panelPrice : 0,
+                statusClearForm : false
             }
         },
         computed: {
@@ -138,8 +163,9 @@ import { mapGetters } from 'vuex'
             })
         },
         mounted() {
-            console.log('wallet_token',this.wallet_token);
             this.getPanelAuto(true)
+            this.getPanelPrice()
+            // this.$router.push('/?tk=xxx')
         },
         methods : {
             async getPanelAuto(status_get_data_first) {
@@ -149,7 +175,7 @@ import { mapGetters } from 'vuex'
                 try {
                     const getPanelAutoToUser = await this.$axios.get(url)
                     this.panelDefault = getPanelAutoToUser.data.data;
-                    // console.log('panelDefault',this.panelDefault.id);
+                    console.log('panelDefault',this.panelDefault.id);
                     this.isWon = getPanelAutoToUser.data.data.is_won
 
                     if(status_get_data_first == true) {
@@ -171,10 +197,53 @@ import { mapGetters } from 'vuex'
                     console.log(err);
                 }
             },
+
             setOpenLabel(index,isBomb) {
                 this.countPanel[index].openPanel = true;
                 this.countPanel[index].isBomb = isBomb == 0 ? true : false;
 
+            },
+            
+            async getPanelPrice() {
+                const url = `/data/get_panel_price/`
+
+                try {
+                    const getPrice = await this.$axios.get(url)
+                    this.panelPriceData = getPrice.data.data
+                } catch(err) {
+                    console.log(err);
+                }
+            },
+
+            modalChoosePrice() {
+                this.statusClearForm = true
+                this.$modal.show("ModalChoosePrice"); 
+            },
+
+            submitChoosePrice(price) {
+                this.$modal.hide("ModalChoosePrice");
+                this.panelPrice = price
+                this.priceUserReceive = price * 3
+                this.statusClearForm = false
+            },
+            
+            async startGame() {
+                const url = `/bomb_panels/user/buy_panel`
+                let splitToken = this.wallet_token.split('[SALT]')
+                const _data = {
+                    uu_id : splitToken[2],
+                    panel_price : this.panelPrice ,
+                    panel_id : this.panelDefault.id,
+                    b : splitToken[0],
+                    tk : splitToken[1],
+                }
+
+                try {
+                    const userBuyPanel = await this.$axios.post(url,_data)
+                    console.log('userBuyPanel',userBuyPanel);
+                } catch(err) {
+                    console.log(err);
+                }
             },
 
             testModal() {

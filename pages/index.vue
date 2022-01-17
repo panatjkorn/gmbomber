@@ -233,7 +233,7 @@ import { mapGetters } from 'vuex'
                     let isBomb = 0
                     this.countUserClickReward = 0
                     for(let i = 0; i < this.panelDefault.default_panel.length; i++) {
-                        console.log(this.panelDefault.default_panel[i].open_panel_default);
+                        // console.log(this.panelDefault.default_panel[i].open_panel_default);
                         if(this.panelDefault.default_panel[i].open_panel_default == 1) {
                             isReward++
                             this.countUserClickReward++
@@ -283,23 +283,8 @@ import { mapGetters } from 'vuex'
                 try {
                     const getPanelAutoToUser = await this.$axios.get(url)
                     this.panelDefault = getPanelAutoToUser.data.data;
-                    console.log('panelDefault',this.panelDefault.id);
+                    // console.log('panelDefault',this.panelDefault.id);
                     this.isWon = getPanelAutoToUser.data.data.is_won
-
-                //     if(status_get_data_first == true) {
-                //     let isBomb = null
-                //     for(let i = 0; i < this.panelDefault.default_panel.length; i++) {
-                //         // console.log('this.panelDefault.default_panel',this.panelDefault.default_panel);
-                //         for(let i2 = 0; i2 < this.countPanel.length; i2++) {
-                //             if(this.panelDefault.default_panel[i].open_panel == i2) {
-                //                 this.countPanel[i2].isActive = true
-                //                 setTimeout(()=> { 
-                //                     this.setOpenLabel(i2,this.panelDefault.default_panel[i].open_panel_default);
-                //                 }, 2500);
-                //             }
-                //         }
-                //     }
-                // }
 
                 } catch(err) {
                     console.log(err);
@@ -353,7 +338,7 @@ import { mapGetters } from 'vuex'
 
                 try {
                     const userBuyPanel = await this.$axios.post(url,_data)
-                    console.log('userBuyPanel',userBuyPanel);
+                    // console.log('userBuyPanel',userBuyPanel);
                     if(userBuyPanel.status == 200) {
                         this.createPanel()
                         let newTk = await userBuyPanel.data.data.data.wallet_token

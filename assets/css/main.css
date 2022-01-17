@@ -1,7 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap'); */
 
 .font-kanit{
-  font-family: 'Kanit', sans-serif;
+  font-family: 'kanit', sans-serif;
+}
+
+@font-face {
+  font-family: 'kanit';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('@/assets/fonts/Kanit-Regular.ttf') format('truetype');
 }
 
 .text-green-reward-num {

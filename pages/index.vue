@@ -202,7 +202,8 @@ import { mapGetters } from 'vuex'
                 isBuyPanel : false,
                 countReward : 0,
                 countBomb : 0,
-                countUserClickReward : 0
+                countUserClickReward : 0,
+                isUserClick : true
             }
         },
         computed: {
@@ -365,6 +366,10 @@ import { mapGetters } from 'vuex'
                     return;
                 }
 
+                if(this.isUserClick == false) {
+                    return;
+                }
+
                 if(this.countPanel[index].openPanel == false) {
                     //เช็คว่ายังไม่ได้เปิด
 
@@ -374,6 +379,7 @@ import { mapGetters } from 'vuex'
                     }
 
                     this.countPanel[index].isActive = true;
+                    this.isUserClick = false;
                     let splitToken = this.wallet_token.split('[SALT]')
                     setTimeout(async ()=> { 
                         try{
@@ -396,7 +402,9 @@ import { mapGetters } from 'vuex'
                                 let isBomb = 0
                                 this.setOpenLabel(index,isBomb)
                             }
+
                             this.getBombInPanel(false);
+
                             if(checkResult.data.data.user != null) {
                                 let userWallet = checkResult.data.data && checkResult.data.data.user ? checkResult.data.data.user : null
                                 let splitNewTk = userWallet.wallet_token.split('[SALT]')
@@ -424,6 +432,7 @@ import { mapGetters } from 'vuex'
             setOpenLabel(index,isBomb) {
                 this.countPanel[index].openPanel = true;
                 this.countPanel[index].isBomb = isBomb == 0 ? true : false;
+                this.isUserClick = true
             },
             finishLabel(data) {
                 if(data == false) {

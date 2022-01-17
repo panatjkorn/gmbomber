@@ -13,7 +13,7 @@
         <img v-if="countReward == 1" src="@/assets/img/lose2.png" alt="" class="w-auto">
         <img v-if="countReward == 2" src="@/assets/img/lose3.png" alt="" class="w-auto">
         <img v-if="countReward == 3" src="@/assets/img/lose4.png" alt="" class="w-auto">
-        <div class="flex justify-center items-center">
+        <div class="flex justify-center items-center" @click="closeModalLose()">
             <img src="@/assets/img/resume.png" alt="" class="w-64 md:w-72 h-auto">
         </div>
     </modal>

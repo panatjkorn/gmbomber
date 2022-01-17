@@ -1,23 +1,23 @@
 const state = () => ({
-    money_wallet : null,
+    user_point : null,
 })
 
 const mutations = {
     addWalletToState(state,payload) {
         // console.log('payload',payload);
-      state.money_wallet = payload
+      state.user_point = payload
     }
   }
   
   const actions = {
     setWallet(vuexContext, context) {
         // console.log('context',context.wallet);
-      vuexContext.commit('addWalletToState', context.wallet);
+      vuexContext.commit('addWalletToState', context);
     },
   }
   
   const getters = {
-    moneyWallet: state => state.money_wallet,
+    moneyWallet: state => state.user_point,
   }
   
   export default {

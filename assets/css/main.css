@@ -32,14 +32,20 @@
   background-size: 100% 100%;
 }
 
+.bg-reward-grid { 
+  background-image: url("~/assets/img/mine-rewardfloor.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
 .text-color-black {
   color: #000;
 }
 
-.absolute-center {
-  top : 0%;
-  /* left: 50%; */
-}
+/* .absolute-center {
+  top : 15%;
+} */
 
 .shakePanel {
   animation: shake 0.5s;
@@ -88,7 +94,7 @@
 
 
 .bg-dig-panel {
-  background-image: url("~/assets/img/dig_FINAL1.webp");
+  background-image: url("~/assets/img/DIGv2-FINAL.webp");
   background-size: cover;
   background-repeat: no-repeat;
   background-size: 100% 100%;

@@ -111,7 +111,9 @@ export default {
             this.userChoose = price
         },
         submitChoosePrice() {
-            this.$emit('submitChoosePrice',this.userChoose)
+            if(this.userChoose > 0) {
+                this.$emit('submitChoosePrice',this.userChoose)
+            }
         },
         clearForm() {
             if(this.statusClearForm == true) {

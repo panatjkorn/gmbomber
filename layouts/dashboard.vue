@@ -1,7 +1,7 @@
 <template>
 <!-- bg-gradient-to-b from-black via-black to-red-400 -->
 <!-- bg-black-vdo -->
-<div class="font-kanit h-screen bg-black-vdo">
+<div class="font-kanit min-h-0 bg-black-vdo">
   <div class="backgroundImage">
     <Navbar 
       :user-detail="user_detail"
@@ -35,7 +35,7 @@
             >
             <div class="wrapper-box">
                 <div class="content">
-                <Nuxt class="min-h-screen" /> 
+                  <Nuxt class="min-h-screen" /> 
                 </div>
             </div>
         </div>
@@ -83,12 +83,10 @@ export default {
   },
   created() {
     this.setUUidToStore()
+    this.getMoneyUser();
   },
   mounted() {
-    this.getMoneyUser();
-    // if(this.$store.state.auth.loggedIn) {
-    //   this.getMe()
-    // }
+    // this.getMoneyUser();
   },
   methods: {
     async setUUidToStore() {
@@ -100,7 +98,8 @@ export default {
 
       try {
         const getMoney = await this.$axios.$get(url)
-        this.walletMoney = getMoney.data;
+        // this.walletMoney = getMoney.data;
+        await this.$store.dispatch('wallet/setWallet',getMoney.data.points)
       } catch(err) {
         console.log(err);
       }

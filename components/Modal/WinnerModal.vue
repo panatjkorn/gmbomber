@@ -10,7 +10,7 @@
         height="auto"
     >
     <img src="@/assets/img/win1.png" alt="" class="w-full">
-    <div class="flex justify-center items-center">
+    <div class="flex justify-center items-center" @click="closeModalWin()">
         <img src="@/assets/img/resume.png" alt="" class="w-64 md:w-72 h-auto">
     </div>
       <!-- <div class="bg-transparent">

@@ -123,17 +123,30 @@
                                 <span class="text-4xl ml-2 font-bold text-white">{{ priceUserReceive }}</span>
                         </div>
                         <div class="col-span-1">
-                            <button class="text-white rounded-full">
+                            <button
+                                v-if="isPlayAuto == false" 
+                                class="text-white rounded-full"
+                                :class="{
+                                    'opacity-75' : panelPrice <= 0
+                                }"
+                                @click="startAutoPlay()"
+                            >
                                 <img src="@/assets/img/auto.png" alt="" class="w-10 h-10">
                             </button>
                         </div>
                     </div>
 
-                    <div class="flex justify-center items-center mt-2 cursor-pointer" @click="startGame()">
+                    <div 
+                        class="flex justify-center items-center mt-2 cursor-pointer"
+                        :class="{
+                            'opacity-75' : panelPrice <= 0
+                        }"
+                        @click="startGame()"
+                    >
                         <img src="@/assets/img/play.png" alt="" class="w-64 md:w-72 h-auto">
                     </div>
 
-                    <!-- <button @click="showModalWinner()" class="text-white">testttttttt</button> -->
+                    <button @click="testTimeout()" class="text-white">replay</button>
 
                     <!-- test -->
                     <!-- <div class="p-3 shadow-md xs:mt-24 iphone8plus:mt-36 md:mt-36 lg:mt-64 xl:mt-24">
@@ -203,7 +216,12 @@ import { mapGetters } from 'vuex'
                 countReward : 0,
                 countBomb : 0,
                 countUserClickReward : 0,
-                isUserClick : true
+                isUserClick : true,
+                panelPriceCheckUserBuy : null,
+                openPanelArr : [],
+                defaultArrPanel : [0,1,2,3,4,5,6,7,8], //ช่องตาราง
+                timeOutPlayAuto : null,
+                isPlayAuto : false
             }
         },
         computed: {
@@ -222,6 +240,7 @@ import { mapGetters } from 'vuex'
         },
         methods : {
             async getBombInPanel(status_get_data_first) {
+                this.openPanelArr = []
                 this.countReward = 0
                 this.countBomb = 0
                 let splitToken = this.wallet_token.split('[SALT]')
@@ -229,12 +248,14 @@ import { mapGetters } from 'vuex'
                 try {
                     const getDataPanel = await this.$axios.get(url);
                     this.panelDefault = getDataPanel.data.data;
+                    this.panelPriceCheckUserBuy = getDataPanel.data.data.price
+                    console.log('getDataPanel',getDataPanel);
                     
                     let isReward = 0
                     let isBomb = 0
                     this.countUserClickReward = 0
                     for(let i = 0; i < this.panelDefault.default_panel.length; i++) {
-                        // console.log(this.panelDefault.default_panel[i].open_panel_default);
+                        this.openPanelArr.push(this.panelDefault.default_panel[i].open_panel)
                         if(this.panelDefault.default_panel[i].open_panel_default == 1) {
                             isReward++
                             this.countUserClickReward++
@@ -349,6 +370,7 @@ import { mapGetters } from 'vuex'
                         await this.$store.dispatch('wallet/setWallet',newUserCredit)
                         this.$router.push(`/?b=${splitNewTk[0]}&tk=${splitNewTk[1]}&user=${splitNewTk[2]}`)
                         this.isBuyPanel = true
+                        this.getBombInPanel();
                         this.$toast.success("start!!");
                     }
                 } catch(err) {
@@ -360,6 +382,7 @@ import { mapGetters } from 'vuex'
                     }
                 }
             },
+
             async checkResult(index) {
                 if(this.isBuyPanel == false) {
                     this.$toast.error("กรุณาระบุจำนวนเงิน");
@@ -392,7 +415,6 @@ import { mapGetters } from 'vuex'
                             }
 
                             const checkResult = await this.$axios.post(url,_data)
-                            // console.log('checkResult',checkResult);
                             
                             if(checkResult.data.data.value == true) {
                                  //ไม่ถูกระเบิด
@@ -403,7 +425,10 @@ import { mapGetters } from 'vuex'
                                 this.setOpenLabel(index,isBomb)
                             }
 
-                            this.getBombInPanel(false);
+                            //ถ้าไม่ใช่ออโต้ให้เรียก
+                            if(this.isPlayAuto == false) {
+                                this.getBombInPanel(false);
+                            }
 
                             if(checkResult.data.data.user != null) {
                                 let userWallet = checkResult.data.data && checkResult.data.data.user ? checkResult.data.data.user : null
@@ -420,7 +445,11 @@ import { mapGetters } from 'vuex'
                             } else {
                                 this.$toast.error("Something Wrong!!");
                             }
-                            this.getBombInPanel(false);
+                            //ถ้าไม่ใช่ออโต้ให้เรียก
+                            if(this.isPlayAuto == false) {
+                                this.getBombInPanel(false);
+                            }
+                            
                         }
                         
                     }, 2500);
@@ -429,11 +458,13 @@ import { mapGetters } from 'vuex'
                     this.$toast.error("เลือกซ้ำ");
                 }
             },
+
             setOpenLabel(index,isBomb) {
                 this.countPanel[index].openPanel = true;
                 this.countPanel[index].isBomb = isBomb == 0 ? true : false;
                 this.isUserClick = true
             },
+
             finishLabel(data) {
                 if(data == false) {
                     // this.$toast.error("You Lose!!");
@@ -442,7 +473,7 @@ import { mapGetters } from 'vuex'
                         this.isBombGifStatus = false
                         this.showModalLose();
                     },1000)
-                } else {
+                } else if(data == true) {
                     // this.$toast.success("You Are The Winner!!");
                     this.showModalWinner();
                 }
@@ -451,6 +482,7 @@ import { mapGetters } from 'vuex'
             showModalWinner() {
                 this.$modal.show("WinnerModal"); 
             },
+
             closeModalWin() {
                 this.$modal.hide("WinnerModal");
                 this.$router.go()
@@ -471,6 +503,88 @@ import { mapGetters } from 'vuex'
                 //     this.isBombGifStatus = false;
                 // }, 1500);
             },
+
+            async startAutoPlay() {
+                this.isPlayAuto = true
+                await this.startGame()
+                await this.autoPlay()
+            },
+
+            async autoPlay() {
+                await this.getBombInPanel(false)
+                let arrayNotOpen = []
+                for(let i = 0; i < this.defaultArrPanel.length; i++) {
+                    if(!this.openPanelArr.includes(this.defaultArrPanel[i])) {
+                        arrayNotOpen.push(this.defaultArrPanel[i])
+                    }
+                }
+
+                // console.log('arrayNotOpen',arrayNotOpen.sort((a, b) => 0.5 - Math.random()));
+                // console.log('arrayNotOpen',arrayNotOpen.sort((a, b) => 0.5 - Math.random())[0]);
+                await this.checkResult(arrayNotOpen.sort((a, b) => 0.5 - Math.random())[0])
+
+                if(this.panelDefault.is_won == null) { 
+                    this.timeOutPlayAuto = setTimeout(()=> {
+                        clearTimeout(this.timeOutPlayAuto);
+                        this.autoPlay()
+                    }, 3000);
+                    
+                    // console.log('this.timeOutPlayAuto',this.timeOutPlayAuto);
+                }  else {
+                    this.timeOutPlayAuto = setTimeout(async ()=> {
+                        clearTimeout(this.timeOutPlayAuto);
+                        await this.rePlayAuto()
+                    }, 1500);
+                    
+                }
+                
+            },
+
+            async rePlayAuto() {
+                this.countPanel = [
+                    { isActive : false, openPanel : false, isBomb : false },
+                    { isActive : false, openPanel : false, isBomb : false },
+                    { isActive : false, openPanel : false, isBomb : false },
+                    { isActive : false, openPanel : false, isBomb : false },
+                    { isActive : false, openPanel : false, isBomb : false },
+                    { isActive : false, openPanel : false, isBomb : false },
+                    { isActive : false, openPanel : false, isBomb : false },
+                    { isActive : false, openPanel : false, isBomb : false },
+                    { isActive : false, openPanel : false, isBomb : false },
+                ]
+                if(this.panelDefault.is_won == true) {
+                    this.$modal.hide("WinnerModal");
+                    await this.getPanelAuto()
+                    await this.getBombInPanel(true)
+                    setTimeout(async ()=> {
+                        await this.startGame()
+                        await this.autoPlay()
+                    },2500)
+                } else {
+                    this.$modal.hide("LoseModal");
+                    await this.getPanelAuto()
+                    await this.getBombInPanel(true)
+                    setTimeout(async ()=> {
+                        await this.startGame()
+                        await this.autoPlay()
+                    },2500)
+                }
+                
+            },
+
+            testTimeout() {
+                this.autoTimeout()
+            },
+            
+            autoTimeout() {
+                let count = 0
+                setTimeout(()=> {
+                    count ++;
+                    console.log(count);
+                    clearTimeout(timeout)
+                    let timeout = this.autoTimeout()
+                }, 1000);
+            }
         }
     }
 </script>

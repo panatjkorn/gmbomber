@@ -1,11 +1,11 @@
 const state = () => ({
-    user_point : null,
+    user_credit : null,
 })
 
 const mutations = {
     addWalletToState(state,payload) {
         // console.log('payload',payload);
-      state.user_point = payload
+      state.user_credit = payload
     }
   }
   
@@ -17,7 +17,7 @@ const mutations = {
   }
   
   const getters = {
-    moneyWallet: state => state.user_point,
+    moneyWallet: state => state.user_credit,
   }
   
   export default {

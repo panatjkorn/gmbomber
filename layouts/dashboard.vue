@@ -22,6 +22,10 @@
                 mx-auto 
                 my-auto 
                 z-10
+                min-h-screen
+                h-full
+                sm:h-auto
+                lg:h-full
                 sm:w-2/3
                 md:w-2/3
                 lg:w-2/3
@@ -62,7 +66,7 @@ export default {
       formattedMenu: '',
       user_detail : '',
       walletMoney : '',
-      token : `${this.$route.query.b}[SALT]${this.$route.query.tk}[SALT]${this.$route.query.user}`,
+      token : `${this.$route.query.token}`,
       uuId : this.$route.query.user,
     };
   },
@@ -75,16 +79,17 @@ export default {
   },
   methods: {
     async setUUidToStore() {
-      let uuIdUser = await this.token
-      await this.$store.dispatch('user/setUUId',uuIdUser)
+        let uuIdUser = await this.token
+        await this.$store.dispatch('user/setUUId',uuIdUser)
     },
     async getMoneyUser() {
       const url = `/wallet_game/init_wallet?token=${this.token}`
 
       try {
         const getMoney = await this.$axios.$get(url)
-        // this.walletMoney = getMoney.data;
-        await this.$store.dispatch('wallet/setWallet',getMoney.data.points)
+        await this.$store.dispatch('user/setUUId',getMoney.data.wallet_token)
+        await this.$store.dispatch('wallet/setWallet',getMoney.data.user_credit.credit)
+        this.$router.push(`/?token=${getMoney.data.wallet_token}`)
       } catch(err) {
         console.log(err);
       }

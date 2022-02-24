@@ -1,6 +1,6 @@
 <template>
-    <div v-if="isLoadPage == true">
-        <div v-if="isLandScape == false" class="pt-5">
+    <div>
+        <div class="pt-5">
             <!-- md:w-1/3 -->
             <div v-if="isBombGifStatus" class="w-full absolute absolute-center flex justify-center" >
                 <img src="@/assets/img/bombgif.webp" alt="" 
@@ -59,11 +59,11 @@
                     </div>
             </div>
 
-            <div class="grid justify-center items-center lg:mt-14 2xl:mt-36">
+            <div class="grid justify-center items-center lg:mt-14 2xl:mt-24">
 
                 <div class="w-full se:w-300 xs:w-330 md:w-96 rounded-lg">
                     
-                    <div class="p-3 shadow-md xs:mt-24 iphone8plus:mt-36 md:mt-48 lg:mt-48 xl:mt-24">
+                    <div class="p-3 shadow-md xs:mt-24 iphone8plus:mt-36 md:mt-48 lg:mt-48 xl:mt-24 2xl:mt-0 fullhd:mt-8">
                         <div class="grid grid-cols-3  gap-1">
                             <div v-for="(bomb,index) in countPanel" :key="index">
                                 <div 
@@ -107,21 +107,37 @@
                     <div class="border border-white p-2 text-white flex rounded-md overflow-y-hidden">
                         <img src="@/assets/img/icon/pocket.png"  alt="pocket" class="w-6 h-6">
                         <span 
-                            class="ml-5 textLineUp"
+                            class="ml-5"
+                            :class="{
+                                'textLineUp' : isCreditChange
+                            }"
                         >
-                            sadasd
+                            {{ userCredit }}
                         </span>
                     </div>
                     <div 
                         class="border border-white p-2 flex rounded-md cursor-pointer" 
-                        @click="isShowing = !isShowing"
+                        @click="modalChoosePrice()"
+                        
                     >
                         <img src="@/assets/img/icon/Coins.png"  alt="Coins" class="w-6 h-6">
-                        <span class="ml-5">sadasd</span>
+                        <span 
+                            class="ml-5"
+                            :class="{
+                                'textLineUp' : isPanelPriceChange
+                            }"
+                        >{{ panelPrice }}</span>
                     </div>
                     <div class="border border-white p-2 flex rounded-md">
                         <img src="@/assets/img/icon/badge1.png"  alt="badge1" class="w-6 h-6">
-                        <span class="ml-5 textLineUp">sadasd</span>
+                        <span 
+                            class="ml-5"
+                            :class="{
+                                'textLineUp' : isUserReceiveCreditChange
+                            }"
+                        >
+                            {{ priceUserReceive }}
+                        </span>
                     </div>
                 </div>
 
@@ -151,7 +167,7 @@
                     <button
                         class="
                             col-span-2 
-                            bg-red-600 
+                             
                             text-white 
                             border 
                             border-white 
@@ -164,6 +180,12 @@
                             xl:text-2xl
                             3xl:text-4xl
                         "
+                        :class="{
+                            'bg-red-600' : panelPrice > 0,
+                            'bg-gray-300' : panelPrice <= 0
+                        }"
+                        :disabled="panelPrice <= 0"
+                        @click="startGame()"
                     >เริ่มเล่น
                     </button>
                     <svg class="w-8 h-8 md:w-12 md:h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -217,9 +239,6 @@
                     </svg>
                 </div>
             </div>
-        </div>
-        <div v-else>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptates unde asperiores, est et ad quisquam commodi amet doloribus perspiciatis repellat pariatur doloremque quae tempore nemo recusandae quibusdam. Iste animi neque ut! In, cupiditate! Necessitatibus soluta sint, quaerat aut tenetur inventore laborum id doloribus animi consequuntur consequatur voluptatum quod, blanditiis sequi.
         </div>
         <client-only>
             <WinnerModal 
@@ -291,40 +310,33 @@ import { mapGetters } from 'vuex'
                 isOption : false,
                 isTransition : false,
                 isShowing : false,
-                isLandScape : false,
-                isLoadPage : false
+                userCredit : 0,
+                isCreditChange : false,
+                isPanelPriceChange : false,
+                isUserReceiveCreditChange : false,
             }
         },
         computed: {
+            doneTodosCount () {
+                return this.$store.state.wallet.moneyWallet
+            },
             ...mapGetters({
                 uuId: "user/getUUId",
-                wallet_token : "user/getWalletToken"
+                wallet_token : "user/getWalletToken",
+                user_credit : "wallet/moneyWallet"
             })
         },
         async mounted() {
-            console.log('window.innerHeight',window.innerHeight);
-            console.log('window.innerWidth',window.innerWidth);
-            this.$nextTick(() => {
-                if(window.innerHeight > window.innerWidth){
-                    this.isLandScape = false
-                    this.isLoadPage = true
-                } else {
-                    this.isLandScape = true
-                    this.isLoadPage = true
-                }
-            })
-            
-            // if(window.innerHeight > window.innerWidth){
-            //     alert("แนวตั้ง");
-            // } else {
-            //     alert("แนวนอน")
-            // }
+            // var current_mode = screen.orientation;
+            // console.log(current_mode.type)
             await this.getPanelAuto()
             await this.getBombInPanel(true)
-            this.getPanelPrice()
+            await this.getPanelPrice()
+            // await this.creditChange()
         },
         watch : {
-            isWon : 'finishLabel'
+            isWon : 'finishLabel',
+            user_credit : 'setCreditUser'
         },
         methods : {
             async getBombInPanel(status_get_data_first) {
@@ -374,6 +386,7 @@ import { mapGetters } from 'vuex'
                     console.log(err);
                 }
             },
+
             async createPanel() {
                 const url = `/bomb_panels/`
                 try {
@@ -425,8 +438,14 @@ import { mapGetters } from 'vuex'
 
             submitChoosePrice(price) {
                 this.$modal.hide("ModalChoosePrice");
+                this.isPanelPriceChange = true
+                this.isUserReceiveCreditChange = true
                 this.panelPrice = price
                 this.priceUserReceive = price * 3
+                setTimeout(() => {
+                    this.isPanelPriceChange = false
+                    this.isUserReceiveCreditChange = false
+                }, 1000);
                 this.statusClearForm = false
             },
             
@@ -437,18 +456,15 @@ import { mapGetters } from 'vuex'
                 }
 
                 const url = `/bomb_panels/user/buy_panel`
-                let splitToken = this.wallet_token.split('[SALT]')
                 const _data = {
-                    uu_id : splitToken[2],
                     panel_price : parseInt(this.panelPrice),
                     panel_id : parseInt(this.panelDefault.id),
-                    b : splitToken[0],
-                    tk : splitToken[1],
+                    wallet_token : this.wallet_token
                 }
+                console.log('_data',_data);
 
                 try {
                     const userBuyPanel = await this.$axios.post(url,_data)
-                    // console.log('userBuyPanel',userBuyPanel);
                     if(userBuyPanel.status == 200) {
                         this.createPanel()
                         let newTk = await userBuyPanel.data.data.data.wallet_token
@@ -456,7 +472,7 @@ import { mapGetters } from 'vuex'
                         let splitNewTk = newTk.split('[SALT]')
                         await this.$store.dispatch('user/setUUId',newTk)
                         await this.$store.dispatch('wallet/setWallet',newUserCredit)
-                        this.$router.push(`/?b=${splitNewTk[0]}&tk=${splitNewTk[1]}&user=${splitNewTk[2]}`)
+                        this.$router.push(`/?token=${newTk}`)
                         this.isBuyPanel = true
                         this.getBombInPanel();
                         this.$toast.success("start!!");
@@ -491,15 +507,12 @@ import { mapGetters } from 'vuex'
 
                     this.countPanel[index].isActive = true;
                     this.isUserClick = false;
-                    let splitToken = this.wallet_token.split('[SALT]')
                     setTimeout(async ()=> { 
                         try{
                             const url = `/bomb_panels/${this.panelDefault.id}/check_result`
                             const _data = {
-                                uu_id : this.uuId,
                                 click_at : index,
-                                b : splitToken[0],
-                                tk : splitToken[1],
+                                wallet_token : this.wallet_token
                             }
 
                             const checkResult = await this.$axios.post(url,_data)
@@ -520,10 +533,9 @@ import { mapGetters } from 'vuex'
 
                             if(checkResult.data.data.user != null) {
                                 let userWallet = checkResult.data.data && checkResult.data.data.user ? checkResult.data.data.user : null
-                                let splitNewTk = userWallet.wallet_token.split('[SALT]')
                                 await this.$store.dispatch('wallet/setWallet',userWallet.user_credit)
                                 await this.$store.dispatch('user/setUUId',userWallet.wallet_token)
-                                this.$router.push(`/?b=${splitNewTk[0]}&tk=${splitNewTk[1]}&user=${splitNewTk[2]}`)
+                                this.$router.push(`/?token=${userWallet.wallet_token}`)
                             }
 
                         } catch(err) {
@@ -673,6 +685,7 @@ import { mapGetters } from 'vuex'
                     let timeout = this.autoTimeout()
                 }, 1000);
             },
+
             isOptionHandleTab2() {
                 // this.isOption = true
                 this.isTransition = true
@@ -680,11 +693,24 @@ import { mapGetters } from 'vuex'
                     this.isOption = true
                 }, 200);
             },
+
             isTransitionTab1() {
                 this.isTransition = false
                 setTimeout(() => {
                     this.isOption = false
                 }, 200);
+            },
+            
+            setCreditUser(credit) {
+                this.isCreditChange = true
+                this.isPanelPriceChange = true
+                this.isUserReceiveCreditChange = true
+                this.userCredit = credit
+                setTimeout(() => {
+                    this.isCreditChange = false
+                    this.isPanelPriceChange = false
+                    this.isUserReceiveCreditChange = false
+                }, 1000);
             }
         }
     }

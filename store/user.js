@@ -5,7 +5,7 @@ const state = () => ({
 
 const mutations = {
     addUUIDToState(state,payload) {
-        state.uuId = payload.split("[SALT]")[2]
+        state.uuId = payload.split("[SALT]")[1]
         state.wallet_token = payload
     }
 }

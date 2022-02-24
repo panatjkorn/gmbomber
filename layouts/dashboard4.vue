@@ -22,6 +22,10 @@
                 mx-auto 
                 my-auto 
                 z-10
+                min-h-screen
+                h-full
+                sm:h-auto
+                lg:h-full
                 sm:w-2/3
                 md:w-2/3
                 lg:w-2/3

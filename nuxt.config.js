@@ -26,6 +26,7 @@ export default {
     { src: '~/plugins/vuelidate.js', mode: 'client'},
     { src: '~/plugins/vue-js-modal.js', mode: 'client'},
     { src: '~/plugins/maz-ui.js', mode: 'client'},
+    { src: '~/plugins/vue-marquee.js', mode: 'client'},
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

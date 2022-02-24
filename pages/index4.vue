@@ -1,6 +1,6 @@
 <template>
-    <div v-if="isLoadPage == true">
-        <div v-if="isLandScape == false" class="pt-5">
+    <div>
+        <div class="pt-5">
             <!-- md:w-1/3 -->
             <div v-if="isBombGifStatus" class="w-full absolute absolute-center flex justify-center" >
                 <img src="@/assets/img/bombgif.webp" alt="" 
@@ -14,7 +14,6 @@
                     "
                 >
             </div>
-
             <div class="flex justify-center items-center mx-4">
                 <div class="grid grid-cols-3 gap-2">
                         <div class="col-span-2 bg-black rounded-full px-8">
@@ -58,12 +57,11 @@
                         </div>
                     </div>
             </div>
-
-            <div class="grid justify-center items-center lg:mt-14 2xl:mt-36">
+            <div class="grid justify-center items-center lg:pt-48 2xl:pt-36">
 
                 <div class="w-full se:w-300 xs:w-330 md:w-96 rounded-lg">
                     
-                    <div class="p-3 shadow-md xs:mt-24 iphone8plus:mt-36 md:mt-48 lg:mt-48 xl:mt-24">
+                    <div class="p-3 shadow-md xs:mt-24 iphone8plus:mt-36 md:mt-48 lg:mt-64 xl:mt-24">
                         <div class="grid grid-cols-3  gap-1">
                             <div v-for="(bomb,index) in countPanel" :key="index">
                                 <div 
@@ -81,22 +79,63 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- <marquee-text :duration="textlen" :repeat="10">
+                        <span class="px-2">
+                            {{ text_slidebar ? text_slidebar : "" }}
+                        </span>
+                    </marquee-text> -->
+                    <!-- <div class="grid grid-cols-4 gap-4 px-2 py-1 md:mt-3">
+                        
+                        <div 
+                            class="
+                                flex 
+                                justify-center 
+                                items-center 
+                                bg-black 
+                                text-white 
+                                rounded-full 
+                                border 
+                                border-white 
+                                col-span-3
+                                cursor-pointer
+                                "
+                            @click="modalChoosePrice()"
+                            >
+                            <img src="@/assets/img/Coins.png" alt="" class="w-10 h-10">
+                                <span class="ml-2 text-yellow-300">เงินรางวัล</span>
+                                <span class="text-4xl ml-2 font-bold text-white">{{ priceUserReceive }}</span>
+                        </div>
+                        <div class="col-span-1">
+                            <button
+                                v-if="isPlayAuto == false" 
+                                class="text-white rounded-full"
+                                :class="{
+                                    'opacity-75' : panelPrice <= 0
+                                }"
+                                @click="startAutoPlay()"
+                            >
+                                <img src="@/assets/img/auto.png" alt="" class="w-10 h-10">
+                            </button>
+                        </div>
+                    </div>
+
+                    <div 
+                        class="flex justify-center items-center mt-2 cursor-pointer"
+                        :class="{
+                            'opacity-75' : panelPrice <= 0
+                        }"
+                        @click="startGame()"
+                    >
+                        <img src="@/assets/img/play.png" alt="" class="w-64 md:w-72 h-auto">
+                    </div>
+
+                    <button @click="testTimeout()" class="text-white">replay</button> -->
                 </div>
             </div>
-            
-            <!-- menu -->
-            <div class="bg-hblack-100 text-white sm:w-2/3 md:w-1/2 lg:w-1/2 xl:w-1/3 2xl:w-1/3 m-auto lg:px-5 overflow-y-hidden lg:py-5">
+
+            <div class="bg-hblack-100 text-white md:w-1/2 lg:w-1/2 xl:w-1/3 2xl:w-1/4 m-auto lg:px-5">
                 <div class="bg-red-600 text-white rounded-full p-2 border border-white mx-4 mt-2">
-                    <!-- <div 
-                        v-show="isShowing"
-                        class="bg-red-500"
-                        :class="{
-                            'box-choose-rate' : isShowing
-                        }"
-                    >
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore cum perspiciatis ut corrupti nam maiores. Magnam unde vitae veritatis iure optio tenetur dolores, debitis hic esse rem dolore eum cumque vel, quasi ipsam modi totam blanditiis error eveniet quidem? Deleniti numquam quisquam ullam consectetur vel illo neque ipsa praesentium repudiandae.
-                    </div> -->
-                    
                     <client-only>
                         <marquee-text :duration="15" :repeat="10">
                             {{ text_slidebar }}
@@ -104,24 +143,17 @@
                     </client-only>
                 </div>
                 <div class="grid grid-cols-3 mx-4 mt-2 gap-0.5">
-                    <div class="border border-white p-2 text-white flex rounded-md overflow-y-hidden">
+                    <div class="border border-white p-2 text-white flex rounded-md">
                         <img src="@/assets/img/icon/pocket.png"  alt="pocket" class="w-6 h-6">
-                        <span 
-                            class="ml-5 textLineUp"
-                        >
-                            sadasd
-                        </span>
+                        <span class="ml-5">sadasd</span>
                     </div>
-                    <div 
-                        class="border border-white p-2 flex rounded-md cursor-pointer" 
-                        @click="isShowing = !isShowing"
-                    >
+                    <div class="border border-white p-2 flex rounded-md">
                         <img src="@/assets/img/icon/Coins.png"  alt="Coins" class="w-6 h-6">
                         <span class="ml-5">sadasd</span>
                     </div>
                     <div class="border border-white p-2 flex rounded-md">
                         <img src="@/assets/img/icon/badge1.png"  alt="badge1" class="w-6 h-6">
-                        <span class="ml-5 textLineUp">sadasd</span>
+                        <span class="ml-5">sadasd</span>
                     </div>
                 </div>
 
@@ -148,6 +180,16 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
 
+                    <!-- <div 
+                        class="mt-2 cursor-pointer"
+                        :class="{
+                            'opacity-75' : panelPrice <= 0
+                        }"
+                        @click="startGame()"
+                    >
+                        <img src="@/assets/img/play.png" alt="" class="h-full">
+                    </div> -->
+
                     <button
                         class="
                             col-span-2 
@@ -161,8 +203,7 @@
                             w-full 
                             h-full
                             text-xl
-                            xl:text-2xl
-                            3xl:text-4xl
+                            xl:text-4xl
                         "
                     >เริ่มเล่น
                     </button>
@@ -217,9 +258,6 @@
                     </svg>
                 </div>
             </div>
-        </div>
-        <div v-else>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptates unde asperiores, est et ad quisquam commodi amet doloribus perspiciatis repellat pariatur doloremque quae tempore nemo recusandae quibusdam. Iste animi neque ut! In, cupiditate! Necessitatibus soluta sint, quaerat aut tenetur inventore laborum id doloribus animi consequuntur consequatur voluptatum quod, blanditiis sequi.
         </div>
         <client-only>
             <WinnerModal 
@@ -290,9 +328,6 @@ import { mapGetters } from 'vuex'
                 duration : 15,
                 isOption : false,
                 isTransition : false,
-                isShowing : false,
-                isLandScape : false,
-                isLoadPage : false
             }
         },
         computed: {
@@ -302,23 +337,6 @@ import { mapGetters } from 'vuex'
             })
         },
         async mounted() {
-            console.log('window.innerHeight',window.innerHeight);
-            console.log('window.innerWidth',window.innerWidth);
-            this.$nextTick(() => {
-                if(window.innerHeight > window.innerWidth){
-                    this.isLandScape = false
-                    this.isLoadPage = true
-                } else {
-                    this.isLandScape = true
-                    this.isLoadPage = true
-                }
-            })
-            
-            // if(window.innerHeight > window.innerWidth){
-            //     alert("แนวตั้ง");
-            // } else {
-            //     alert("แนวนอน")
-            // }
             await this.getPanelAuto()
             await this.getBombInPanel(true)
             this.getPanelPrice()
@@ -693,52 +711,18 @@ import { mapGetters } from 'vuex'
     .transitionDown {
         transition-timing-function: ease-in;
         transition: 0.1s;
-        transform: translateY(25em);
+        transform: translateY(150px);
         /* position:relative;
         animation:animatebottom 0.6s}
         @keyframes animatebottom{from{bottom:0;opacity:1} to{bottom:-300px;opacity:0} */
     }
     .transitionUp {
-        transition: 0.25s;
-        transition-timing-function: ease-out;
-        transform: translateY(0);
-        opacity: 1;
-
-        /* position:relative;
+        position:relative;
         animation:animatebottom 0.1s}
-        @keyframes animatebottom{from{bottom:-25em;opacity:0} to{bottom:0;opacity:1} */
-
+        @keyframes animatebottom{from{bottom:-150px;opacity:0} to{bottom:0;opacity:1}
         /* transition-timing-function: ease-in;
         transition: 0.6s;
         
         transform: translateX(0%); */
-    }
-
-    .textLineUp {
-        animation: 2s anim-lineUp ease-out infinite;
-    }
-
-    @keyframes anim-lineUp {
-        0% {
-            opacity: 0;
-            transform: translateY(-80%);
-        }
-        20% {
-            opacity: 0;
-        }
-        50% {
-            opacity: 1;
-            transform: translateY(0%);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0%);
-        }
-    }
-
-    .box-choose-rate { 
-        position : absolute;
-        background‑color:silver;
-        z-index : 20
     }
 </style>

@@ -20,6 +20,7 @@
     "nuxt": "^2.15.7",
     "postcss-loader": "^6.2.1",
     "vue-js-modal": "^2.0.1",
+    "vue-marquee-text-component": "^1.2.0",
     "vue-toastification": "^1.7.14",
     "vuelidate": "^0.7.7"
   },

@@ -21,6 +21,7 @@ module.exports = {
       lg: '1024px',
       xl: '1280px',
       '2xl': '1536px',
+      'fullhd' : '1920px'
     },
     colors: {
       transparent: 'transparent',
@@ -74,6 +75,7 @@ module.exports = {
       72: '18rem',
       80: '20rem',
       96: '24rem',
+      104: '26rem',
     },
     animation: {
       none: 'none',

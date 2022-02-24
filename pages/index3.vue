@@ -1,8 +1,8 @@
 <template>
-    <div v-if="isLoadPage == true">
-        <div v-if="isLandScape == false" class="pt-5">
+    <div>
+        <div class="flex justify-center items-center mb-5 mt-5">
             <!-- md:w-1/3 -->
-            <div v-if="isBombGifStatus" class="w-full absolute absolute-center flex justify-center" >
+            <div v-if="isBombGifStatus" class="w-full absolute absolute-center md:left-14 lg:left-32 xl:left-1/3" >
                 <img src="@/assets/img/bombgif.webp" alt="" 
                     class="
                         z-40 
@@ -14,56 +14,64 @@
                     "
                 >
             </div>
-
-            <div class="flex justify-center items-center mx-4">
-                <div class="grid grid-cols-3 gap-2">
-                        <div class="col-span-2 bg-black rounded-full px-8">
-                            <div class="grid grid-cols-4 gap-1 text-center py-1">
+            <div>
+                <div class="md:w-96 w-full rounded-lg md:mt-14 xl:mt-0">
+                    
+                    <div class="px-1 py-1">
+                        <div class="grid xs:grid-cols-4 grid-flow-col gap-4 bg-black text-white rounded-full px-5">
+                            <div class="flex justify-center items-center">
                                 <img 
-                                    v-for="(picReward,index) in 4" :key="index"
-                                    src="@/assets/img/reward.png" 
-                                    alt="" 
-                                    class="
-                                        se:w-8 se:h-8 
-                                        xs:w-10 xs:h-10 
-                                        md:w-12 md:h-12 
-                                        lg:w-14 lg:h-14
-                                        object-cover
-                                    "
-                                >
-                            </div>
-                        </div>
-                        <div class="bg-red-600 rounded-full grid grid-cols-2 text-center px-3 items-center justify-center">
-                            <img 
-                                src="@/assets/img/bomb1.png" 
+                                src="@/assets/img/reward.png" 
                                 alt="" 
                                 class="
                                     se:w-8 se:h-8 
                                     xs:w-10 xs:h-10 
                                     md:w-12 md:h-12 
                                     lg:w-14 lg:h-14
-                                    object-cover
                                 "
                             >
-                            <span 
-                                class="
-                                    se:text-4xl 
-                                    md:text-4xl 
-                                    ml-2 
-                                    font-bold
-                                    text-white
-                                ">
-                                    {{ countBomb }}
-                            </span>
+                            </div>
+                            <div class="col-span-2 flex justify-center items-center">
+                                <span class="md:text-lg lg:text-xl">จำนวนสมบัติที่เหลือ</span>
+                            </div>
+                            <div>
+                                <span 
+                                    class="
+                                        se:text-3xl 
+                                        xs:text-4xl 
+                                        md:text-5xl 
+                                        lg:text-6xl 
+                                        ml-2 
+                                        font-bold
+                                        green-48E223
+                                    "
+                                    >{{ countReward }}
+                                </span>
+                            </div>
                         </div>
                     </div>
-            </div>
-
-            <div class="grid justify-center items-center lg:mt-14 2xl:mt-36">
-
-                <div class="w-full se:w-300 xs:w-330 md:w-96 rounded-lg">
+                    <div class="mx-8">
+                        <div class="flex justify-center items-center bg-black text-white rounded-full">
+                            <div class="flex justify-center items-center bg-black text-white rounded-lg">
+                                <img src="@/assets/img/bomb1.png" alt="" class="se:w-7 se:h-7 md:w-10 md:h-10">
+                                    <span class="se:text-md lg:text-xl ml-2">ระเบิดที่เหลือ</span>
+                                    <span 
+                                        class="
+                                            se:text-2xl 
+                                            md:text-3xl 
+                                            ml-2 
+                                            font-bold
+                                        ">
+                                            {{ countBomb }}
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="w-full se:w-300 xs:w-330 md:w-96 rounded-lg mt-8">
                     
-                    <div class="p-3 shadow-md xs:mt-24 iphone8plus:mt-36 md:mt-48 lg:mt-48 xl:mt-24">
+                    <div class="p-3 shadow-md xs:mt-24 iphone8plus:mt-36 md:mt-36 lg:mt-64 xl:mt-24">
                         <div class="grid grid-cols-3  gap-1">
                             <div v-for="(bomb,index) in countPanel" :key="index">
                                 <div 
@@ -78,148 +86,77 @@
                                 >
                                 
                                 </div>
+                                <!-- <div 
+                                    class="w-100 h-24 md:w-28 md:h-28 cursor-pointer rounded-lg border border-white opacity-100"
+                                    :class="{
+                                        'bgPanelGrid' : bomb.openPanel == false && bomb.isActive == false,
+                                        'bgPanelGrid shakePanel' : bomb.openPanel == false && bomb.isActive == true,
+                                        'bg-mine-end' : bomb.openPanel == true && bomb.isActive == true && bomb.isBomb == true,
+                                        'bg-green-500' : bomb.openPanel == true && bomb.isActive == true && bomb.isBomb == false
+                                    }"
+                                    @click="checkResult(index)"
+                                >
+                                </div> -->
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            
-            <!-- menu -->
-            <div class="bg-hblack-100 text-white sm:w-2/3 md:w-1/2 lg:w-1/2 xl:w-1/3 2xl:w-1/3 m-auto lg:px-5 overflow-y-hidden lg:py-5">
-                <div class="bg-red-600 text-white rounded-full p-2 border border-white mx-4 mt-2">
-                    <!-- <div 
-                        v-show="isShowing"
-                        class="bg-red-500"
-                        :class="{
-                            'box-choose-rate' : isShowing
-                        }"
-                    >
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore cum perspiciatis ut corrupti nam maiores. Magnam unde vitae veritatis iure optio tenetur dolores, debitis hic esse rem dolore eum cumque vel, quasi ipsam modi totam blanditiis error eveniet quidem? Deleniti numquam quisquam ullam consectetur vel illo neque ipsa praesentium repudiandae.
-                    </div> -->
-                    
-                    <client-only>
-                        <marquee-text :duration="15" :repeat="10">
-                            {{ text_slidebar }}
-                        </marquee-text>
-                    </client-only>
-                </div>
-                <div class="grid grid-cols-3 mx-4 mt-2 gap-0.5">
-                    <div class="border border-white p-2 text-white flex rounded-md overflow-y-hidden">
-                        <img src="@/assets/img/icon/pocket.png"  alt="pocket" class="w-6 h-6">
-                        <span 
-                            class="ml-5 textLineUp"
-                        >
-                            sadasd
-                        </span>
+
+                    <div class="grid grid-cols-4 gap-4 px-2 py-1 md:mt-3">
+                        
+                        <div 
+                            class="
+                                flex 
+                                justify-center 
+                                items-center 
+                                bg-black 
+                                text-white 
+                                rounded-full 
+                                border 
+                                border-white 
+                                col-span-3
+                                cursor-pointer
+                                "
+                            @click="modalChoosePrice()"
+                            >
+                            <img src="@/assets/img/Coins.png" alt="" class="w-10 h-10">
+                                <span class="ml-2 text-yellow-300">เงินรางวัล</span>
+                                <span class="text-4xl ml-2 font-bold text-white">{{ priceUserReceive }}</span>
+                        </div>
+                        <div class="col-span-1">
+                            <button
+                                v-if="isPlayAuto == false" 
+                                class="text-white rounded-full"
+                                :class="{
+                                    'opacity-75' : panelPrice <= 0
+                                }"
+                                @click="startAutoPlay()"
+                            >
+                                <img src="@/assets/img/auto.png" alt="" class="w-10 h-10">
+                            </button>
+                        </div>
                     </div>
+
                     <div 
-                        class="border border-white p-2 flex rounded-md cursor-pointer" 
-                        @click="isShowing = !isShowing"
-                    >
-                        <img src="@/assets/img/icon/Coins.png"  alt="Coins" class="w-6 h-6">
-                        <span class="ml-5">sadasd</span>
-                    </div>
-                    <div class="border border-white p-2 flex rounded-md">
-                        <img src="@/assets/img/icon/badge1.png"  alt="badge1" class="w-6 h-6">
-                        <span class="ml-5 textLineUp">sadasd</span>
-                    </div>
-                </div>
-
-                <div 
-                    v-if="isOption == false"
-                    class="grid grid-cols-6 mx-4 justify-items-center items-center mt-5"
-                    :class="{
-                        'transitionUp z-40' : isTransition == false,
-                        'transitionDown z-0' : isTransition
-                    }"
-                >
-                    <svg 
-                        class="w-8 h-8 md:w-12 md:h-12 cursor-pointer" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        viewBox="0 0 24 24" 
-                        xmlns="http://www.w3.org/2000/svg"
-                        @click="isOptionHandleTab2()"
-                    >
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                    
-                    <svg class="w-8 h-8 md:w-12 md:h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-
-                    <button
-                        class="
-                            col-span-2 
-                            bg-red-600 
-                            text-white 
-                            border 
-                            border-white 
-                            rounded-full 
-                            px-2 
-                            py-2 
-                            w-full 
-                            h-full
-                            text-xl
-                            xl:text-2xl
-                            3xl:text-4xl
-                        "
-                    >เริ่มเล่น
-                    </button>
-                    <svg class="w-8 h-8 md:w-12 md:h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    
-
-                    <button
-                        v-if="isPlayAuto == false" 
-                        class="text-white rounded-full"
+                        class="flex justify-center items-center mt-2 cursor-pointer"
                         :class="{
                             'opacity-75' : panelPrice <= 0
                         }"
-                        @click="startAutoPlay()"
+                        @click="startGame()"
                     >
-                        <img src="@/assets/img/auto.png" alt="" class="w-10 h-10">
-                    </button>
-                </div>
-                <div
-                    v-else
-                    class="grid grid-cols-6 justify-items-center items-center mt-5 mx-4"
-                    :class="{
-                        'transitionUp z-40' : isTransition,
-                        'transitionDown z-0' : isTransition == false
-                    }"
-                >
-                    <svg 
-                        class="w-8 h-8 md:w-12 md:h-12 text-red-500 cursor-pointer" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        viewBox="0 0 24 24" 
-                        xmlns="http://www.w3.org/2000/svg"
-                        @click="isTransitionTab1()"
-                    >
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+                        <img src="@/assets/img/play.png" alt="" class="w-64 md:w-72 h-auto">
+                    </div>
 
-                    <svg 
-                        class="w-12 h-12 cursor-pointer" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        viewBox="0 0 24 24" 
-                        xmlns="http://www.w3.org/2000/svg"
-                        @click="isOptionHandleTab2()"
-                    >
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                    
-                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+                    <button @click="testTimeout()" class="text-white">replay</button>
+
+                    <!-- test -->
+                    <!-- <div class="p-3 shadow-md xs:mt-24 iphone8plus:mt-36 md:mt-36 lg:mt-64 xl:mt-24">
+                        <img src="@/assets/img/win1.png" alt="" class="w-full">
+                        <div class="flex justify-center items-center">
+                            <img src="@/assets/img/resume.png" alt="" class="w-64 md:w-72 h-auto">
+                        </div>
+                    </div> -->
                 </div>
             </div>
-        </div>
-        <div v-else>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptates unde asperiores, est et ad quisquam commodi amet doloribus perspiciatis repellat pariatur doloremque quae tempore nemo recusandae quibusdam. Iste animi neque ut! In, cupiditate! Necessitatibus soluta sint, quaerat aut tenetur inventore laborum id doloribus animi consequuntur consequatur voluptatum quod, blanditiis sequi.
         </div>
         <client-only>
             <WinnerModal 
@@ -249,10 +186,10 @@ import { mapGetters } from 'vuex'
     export default {
         layout : 'dashboard',
             components : {
-                WinnerModal,
-                LoseModal,
-                ModalChoosePrice,
-            },
+            WinnerModal,
+            LoseModal,
+            ModalChoosePrice
+        },
         data() {
             return {
                 panelId : '',
@@ -284,15 +221,7 @@ import { mapGetters } from 'vuex'
                 openPanelArr : [],
                 defaultArrPanel : [0,1,2,3,4,5,6,7,8], //ช่องตาราง
                 timeOutPlayAuto : null,
-                isPlayAuto : false,
-                picReward : 1,
-                text_slidebar : 'ขุดหาสมบัติที่ซ่อนอยู่ให้ครบ 4 ชิ้นเพื่อรับรางวัลให้สำเร็จ',
-                duration : 15,
-                isOption : false,
-                isTransition : false,
-                isShowing : false,
-                isLandScape : false,
-                isLoadPage : false
+                isPlayAuto : false
             }
         },
         computed: {
@@ -302,23 +231,6 @@ import { mapGetters } from 'vuex'
             })
         },
         async mounted() {
-            console.log('window.innerHeight',window.innerHeight);
-            console.log('window.innerWidth',window.innerWidth);
-            this.$nextTick(() => {
-                if(window.innerHeight > window.innerWidth){
-                    this.isLandScape = false
-                    this.isLoadPage = true
-                } else {
-                    this.isLandScape = true
-                    this.isLoadPage = true
-                }
-            })
-            
-            // if(window.innerHeight > window.innerWidth){
-            //     alert("แนวตั้ง");
-            // } else {
-            //     alert("แนวนอน")
-            // }
             await this.getPanelAuto()
             await this.getBombInPanel(true)
             this.getPanelPrice()
@@ -672,73 +584,7 @@ import { mapGetters } from 'vuex'
                     clearTimeout(timeout)
                     let timeout = this.autoTimeout()
                 }, 1000);
-            },
-            isOptionHandleTab2() {
-                // this.isOption = true
-                this.isTransition = true
-                setTimeout(() => {
-                    this.isOption = true
-                }, 200);
-            },
-            isTransitionTab1() {
-                this.isTransition = false
-                setTimeout(() => {
-                    this.isOption = false
-                }, 200);
             }
         }
     }
 </script>
-<style>
-    .transitionDown {
-        transition-timing-function: ease-in;
-        transition: 0.1s;
-        transform: translateY(25em);
-        /* position:relative;
-        animation:animatebottom 0.6s}
-        @keyframes animatebottom{from{bottom:0;opacity:1} to{bottom:-300px;opacity:0} */
-    }
-    .transitionUp {
-        transition: 0.25s;
-        transition-timing-function: ease-out;
-        transform: translateY(0);
-        opacity: 1;
-
-        /* position:relative;
-        animation:animatebottom 0.1s}
-        @keyframes animatebottom{from{bottom:-25em;opacity:0} to{bottom:0;opacity:1} */
-
-        /* transition-timing-function: ease-in;
-        transition: 0.6s;
-        
-        transform: translateX(0%); */
-    }
-
-    .textLineUp {
-        animation: 2s anim-lineUp ease-out infinite;
-    }
-
-    @keyframes anim-lineUp {
-        0% {
-            opacity: 0;
-            transform: translateY(-80%);
-        }
-        20% {
-            opacity: 0;
-        }
-        50% {
-            opacity: 1;
-            transform: translateY(0%);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0%);
-        }
-    }
-
-    .box-choose-rate { 
-        position : absolute;
-        background‑color:silver;
-        z-index : 20
-    }
-</style>

@@ -220,7 +220,7 @@ export default {
         },
         async registerUser() {
             this.isLoginLoading = true
-            const url = `/users/`
+            const url = `/users/register`
             try {
                 const registerUser = await this.$axios.post(url,{
                     phone_number : this.form.phone_number,

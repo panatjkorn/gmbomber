@@ -49,32 +49,39 @@ export default {
     exposeConfig: true,
   },
 
-  // router: {
-  //   middleware: ['auth'],
-  // }, 
-
-  // publicRuntimeConfig: {
-  //       axios: {
-  //           browserBaseURL: process.env.BASE_URL_API
-  //       },
-  //       game3rdBaseURL:
-  //           process.env.GAME_3RD_URL_API ||
-  //           'https://staging-gamemun-3rd-qhqdywr4hq-as.a.run.app'
-  //   },
-  //   privateRuntimeConfig: {
-  //       axios: {
-  //           baseURL: process.env.BASE_URL_API
-  //       },
-  //       game3rdBaseURL:
-  //           process.env.GAME_3RD_URL_API ||
-  //           'https://staging-gamemun-3rd-qhqdywr4hq-as.a.run.app'
-  //   },
-
   // Build Configuration: https://go.nuxtjs.dev/config-build
   axios: {
-    baseURL: process.env.RUN_MODE == 'dev' 
-      ?  `http://localhost:8080/api/v1`  : `https://gamemun-bomber-dev-api-76iziw7aaq-as.a.run.app/api/v1`
+    baseURL : `http://localhost:8080/api/v1`
   },
+
+  auth: {
+    redirect: {
+      login: '/login'
+    },
+    strategies: {
+      localStorage: false,
+      local: {
+        token: {
+          property: 'accessToken'
+        },
+        endpoints: {
+          login: {
+            url: '/users/login',
+            method: 'POST'
+          },
+          user : {
+            url : '/users/me', method: 'GET'
+          },
+          logout: false,
+        },
+        user: {
+          property: 'data',
+          autoFetch: true
+        }
+      }
+    },
+  },
+
   build: {
     babel:{
       plugins: [
@@ -89,46 +96,9 @@ export default {
     }
   },
 
-  // auth: {
-  //   localStorage: false,
-  //   cookie: {
-  //     prefix: 'auth.',
-  //     options: {
-  //       path: '/',
-  //       maxAge: 60 * 60 * 24 * 7
-  //     }
-  //   },
-  //   redirect: {
-  //     login: '/login',
-  //     logout: '/login'
-  // },
-  //   strategies: {
-  //       local: {
-  //         token: {
-  //           property: 'accessToken'
-  //         },
-  //         endpoints: {
-  //           login: {
-  //             url: '/users/login',
-  //             method: 'post'
-  //           },
-  //           user: { url: "/users/me", method: "get" },
-  //           logout: false,
-  //         },
-  //         user: {
-  //           property: 'data',
-  //           autoFetch: true
-  //         }
-  //       }
-  //   },
-  // },
-
   server: {
     port: process.env.PORT || 3001,
     // host: "0.0.0.0",
     timing: false
   },
 }
-// console.log('process.env.BASE_URL_API',process.env.BASE_URL_API);
-// console.log('process.env',process.env);
-// console.log('process',process);

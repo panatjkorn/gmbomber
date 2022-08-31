@@ -1,24 +1,21 @@
 const state = () => ({
-    uuId : null,
-    wallet_token : null
+    wallet : null
 })
 
 const mutations = {
-    addUUIDToState(state,payload) {
-        state.uuId = payload.split("[SALT]")[1]
-        state.wallet_token = payload
+    setWalletToState(state,payload) {
+        state.wallet = payload.wallet
     }
 }
 
 const actions = {
-    setUUId(vuexContext, context) {
-        vuexContext.commit('addUUIDToState', context);
+    setWallet(vuexContext, context) {
+        vuexContext.commit('setWalletToState', context);
     },
 }
 
 const getters = {
-    getUUId : state => state.uuId,
-    getWalletToken : state => state.wallet_token,
+    getWallet : state => state.wallet,
 }
 
 

@@ -66,45 +66,21 @@ export default {
       formattedMenu: '',
       user_detail : '',
       walletMoney : '',
-      token : `${this.$route.query.token}`,
-      uuId : this.$route.query.user,
     };
   },
   created() {
-    this.setUUidToStore()
-    this.getMoneyUser();
-  },
-  mounted() {
-    // this.getMoneyUser();
+    this.getWallet()
   },
   methods: {
-    async setUUidToStore() {
-        let uuIdUser = await this.token
-        await this.$store.dispatch('user/setUUId',uuIdUser)
-    },
-    async getMoneyUser() {
-      const url = `/wallet_game/init_wallet?token=${this.token}`
-
-      try {
-        const getMoney = await this.$axios.$get(url)
-        await this.$store.dispatch('user/setUUId',getMoney.data.wallet_token)
-        await this.$store.dispatch('wallet/setWallet',getMoney.data.user_credit.credit)
-        this.$router.push(`/?token=${getMoney.data.wallet_token}`)
-      } catch(err) {
-        console.log(err);
-      }
+    async getWallet() {
+      const url = `/users/me`
+        try {
+          const getWallet = await this.$axios.$get(url)
+          this.$store.dispatch("user/setWallet", getWallet.data)
+        } catch(err) {
+          console.log(err);
+        }
     }
-    // async getMe() {
-    //   const url = `/users/me`
-    //   try {
-    //     const getUserDetail = await this.$axios.get(url);
-    //     this.user_detail = await getUserDetail.data.data;
-    //     await this.$store.dispatch('wallet/setWallet',this.user_detail)
-    //     this.walletMoney = this.$store.state.wallet.money_wallet;
-    //   } catch(err) {
-    //     console.log(err);
-    //   }
-    // }
   },
 };
 </script>

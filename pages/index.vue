@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1>test branch</h1>
         <div class="pt-5">
             <!-- md:w-1/3 -->
             <div v-if="isBombGifStatus" class="w-full absolute absolute-center flex justify-center" >
